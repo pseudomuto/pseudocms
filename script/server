@@ -1,0 +1,9 @@
+#!/bin/sh
+cat <<EOF
+---
+Node Version: $(bin/node -v)
+NPM Version: $(bin/npm -v)
+---
+EOF
+
+bundle exec unicorn -p $PORT -c ./config/unicorn.rb
