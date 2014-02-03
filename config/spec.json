@@ -1,0 +1,10 @@
+{
+  "framework" : "qunit",
+  "launch_in_dev" : ["Chrome"],
+  "launch_in_ci" : ["PhantomJS"],
+  "src_files" : [
+    "generated/js/vendor-bundle.js",
+    "generated/js/admin-bundle.js",
+    "generated/js/spec-bundle.js"
+  ]
+}

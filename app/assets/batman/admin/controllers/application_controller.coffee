@@ -1,0 +1,1 @@
+class PseudoCMS.ApplicationController extends Batman.Controller

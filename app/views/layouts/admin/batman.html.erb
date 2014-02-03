@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PseudoCMS</title>
+  <%= csrf_meta_tags %>
+
+  <link href="/assets/admin-bundle.css" media="all" rel="stylesheet" />
+</head>
+<body>
+
+  <div data-yield="main"></div>
+  <script src="/assets/vendor-bundle.js"></script>
+  <script src="/assets/admin-bundle.js"></script>
+  <script>
+    $(function() {
+      PseudoCMS.run();
+    });
+  </script>
+</body>
+</html>

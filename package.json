@@ -1,0 +1,19 @@
+{
+  "name": "pseudocms",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:psueodmuto/pseudocms.git"
+  },
+  "dependencies": {
+    "lineman": "0.24.0",
+    "grunt-concat-sourcemap": "0.4.0",
+    "grunt-batman-templates": "0.1.2",
+    "grunt-contrib-watch": "0.5.2",
+    "grunt-newer": "0.6.0"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}

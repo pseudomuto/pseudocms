@@ -17,3 +17,10 @@
 
 # Foreman
 .env
+
+# Lineman
+.sass-cache
+generated/
+dist/
+public/assets/
+node_modules/
