@@ -3,7 +3,7 @@ defaults: &defaults
   encoding: utf8
   username: root
   password:
-  socket: /tmp/mysql.sock
+  host: localhost
   pool: 5
   timeout: 5000
 

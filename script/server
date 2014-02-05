@@ -1,8 +1,8 @@
 #!/bin/sh
 cat <<EOF
 ---
-Node Version: $(bin/node -v)
-NPM Version: $(bin/npm -v)
+Node Version: $(node -v)
+NPM Version: $(npm -v)
 ---
 EOF
 

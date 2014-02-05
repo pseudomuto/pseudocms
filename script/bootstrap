@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -ex
+bundle install --without production
+sudo npm install -g lineman
+npm install
