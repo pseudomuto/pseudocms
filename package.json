@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:psueodmuto/pseudocms.git"
+    "url": "git@github.com:psuedomuto/pseudocms.git"
   },
   "dependencies": {
     "lineman": "0.24.0",

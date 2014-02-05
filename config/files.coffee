@@ -33,6 +33,8 @@ module.exports =
       concatenated: "generated/js/admin-bundle.js"
       minified: "generated/js/admin-bundle.min.js"
       target: "public/assets/admin-bundle.js"
+      sourcemap: 'generated/js/admin-bundle.js.map'
+      sourcemapTarget: 'public/assets/admin-bundle.js.map'
 
     vendor:
       watch: "#{VENDOR_PATH}/**/*.js"
@@ -46,6 +48,8 @@ module.exports =
       concatenated: "generated/js/vendor-bundle.js"
       minified: "generated/js/vendor-bundle.min.js"
       target: "public/assets/vendor-bundle.js"
+      sourcemap: 'generated/js/vendor-bundle.js.map'
+      sourcemapTarget: 'public/assets/vendor-bundle.js.map'
 
     spec:
       src_dir: "test/batman"
@@ -67,5 +71,5 @@ module.exports =
 
   batman:
     watch: ["#{ADMIN_PATH}/html"]
-    views: ["#{ADMIN_PATH}/html/**/*.htm"]
+    views: ["#{ADMIN_PATH}/html/**/*.html"]
     generated: "generated/batman/view-store.js"
