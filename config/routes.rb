@@ -1,5 +1,7 @@
 Pseudocms::Application.routes.draw do
 
+  root 'main#index'
+
   namespace :admin do
     get "(*redirect_path)", to: "batman#index", constraints: lambda { |request| request.format == "text/html" }
   end
