@@ -16,6 +16,10 @@ group :assets do
   gem 'coffee-rails', '~> 4.0.0'
 end
 
+group :development do
+  gem 'spring'
+end
+
 group :development, :test do
   gem 'mysql2'
 end
