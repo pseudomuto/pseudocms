@@ -18,6 +18,7 @@ end
 
 group :development do
   gem 'spring'
+  gem 'guard-minitest'
 end
 
 group :development, :test do
