@@ -8,7 +8,22 @@
 </head>
 <body>
 
-<%= yield %>
+  <header>
+    <div class="container">
 
+    </div>
+  </header>
+
+  <section role="main">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      Copyright &copy; pseudomuto <%= Time.now.year %>
+    </div>
+  </footer>
 </body>
 </html>

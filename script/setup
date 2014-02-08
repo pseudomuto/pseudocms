@@ -1,4 +1,3 @@
 #!/bin/bash
-
-cp .env-sample .env
+[[ -f .env ]] || cp .env-sample .env
 source ./script/bootstrap

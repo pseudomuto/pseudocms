@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+command = "bundle exec rake test"
+
+unless ARGV.empty?
+  files = Dir['test/**/*_test.rb'].select {|dir| dir =~ /#{ARGV.join('|')}/ }
+  command = "bundle exec testrb -Itest -I. #{files.join(' ')}"
+end
+
+puts command
+system(command)
