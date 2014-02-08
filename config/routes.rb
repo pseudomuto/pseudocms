@@ -3,8 +3,12 @@ Pseudocms::Application.routes.draw do
   root 'main#index'
 
   namespace :admin do
+    root 'batman#index', as: :admin
     get "(*redirect_path)", to: "batman#index", constraints: lambda { |request| request.format == "text/html" }
   end
+
+  get '/sign_up' => 'account#index', as: :new_user
+  post '/sign_up' => 'account#create', as: :sign_up
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

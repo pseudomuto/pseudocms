@@ -37,6 +37,11 @@ class UserTest < ActiveSupport::TestCase
     refute @user.save
   end
 
+  test 'email must be less that 120 characters' do
+    @user.email = "#{('a' * 100)}@{'b' * 48}.com"
+    refute @user.valid?
+  end
+
   test 'password is required' do
     @user.password = ''
     @user.password_confirmation = ''
