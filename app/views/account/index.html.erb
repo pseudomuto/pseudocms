@@ -1,9 +1,4 @@
-<% flash.each do |name, msg| -%>
-  <%= content_tag :div, msg, class: name %>
-<% end -%>
-
 <%= form_for :user, url: { action: 'create' } do |f| %>
-
   <ul>
     <li>
       <h2>Sign Up</h2>
@@ -11,7 +6,7 @@
     </li>
     <li>
       <%= f.label :email %>
-      <%= f.text_field :email, placeholder: 'user@domain.com', required: true %>
+      <%= f.text_field :email, type: 'email', placeholder: 'user@domain.com', required: true %>
       <span class="form-hint">Proper format user@domain.com</span>
     </li>
     <li>
@@ -27,5 +22,4 @@
       <button class="submit" type="submit">Create Account</button>
     </li>
   </ul>
-
 <% end %>

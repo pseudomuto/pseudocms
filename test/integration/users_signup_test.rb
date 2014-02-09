@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
-  # fixtures :users
   attr_reader :params
 
   setup do
@@ -24,6 +23,27 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test "sign up without entering email address" do
     params[:user][:email] = ''
+    post_via_redirect sign_up_path, params
+
+    assert_equal new_user_path, path
+  end
+
+  test "sign up without entering a password" do
+    params[:user][:password] = ''
+    post_via_redirect sign_up_path, params
+
+    assert_equal new_user_path, path
+  end
+
+  test "sign up without confirming the password" do
+    params[:user][:password_confirmation] = ''
+    post_via_redirect sign_up_path, params
+
+    assert_equal new_user_path, path
+  end
+
+  test "sign up with invalid password confirmation" do
+    params[:user][:password_confirmation] = 'something_else'
     post_via_redirect sign_up_path, params
 
     assert_equal new_user_path, path
