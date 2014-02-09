@@ -1,0 +1,51 @@
+$darkBackgroundColor: #050505;
+$brandColor: #33CE1B;
+
+.container {
+  width: 960px;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+}
+
+header {
+  height: 60px;
+  background-color: $darkBackgroundColor;
+
+  a {
+    color: $brandColor;
+  }
+
+  h1 {
+    float: left;
+    margin: 12px 0 0 0;
+  }
+
+  nav {
+    float: right;
+    margin: 18px 0 0 0;
+
+    li {
+      list-style-type: none;
+      display: inline;
+    }
+  }
+}
+
+section[role=main] {
+  .container {
+    background: #fff;
+    padding: 20px 40px 40px;
+  }
+}
+
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 8px 0;
+  background-color: $darkBackgroundColor;
+  color: $brandColor;
+  text-align: center;
+  font-size: 0.8em;
+}

@@ -1,1 +1,31 @@
-<h1>Sign Up</h1>
+<% flash.each do |name, msg| -%>
+  <%= content_tag :div, msg, class: name %>
+<% end -%>
+
+<%= form_for :user, url: { action: 'create' } do |f| %>
+
+  <ul>
+    <li>
+      <h2>Sign Up</h2>
+      <span class="required-notification">* denotes required field</span>
+    </li>
+    <li>
+      <%= f.label :email %>
+      <%= f.text_field :email, placeholder: 'user@domain.com', required: true %>
+      <span class="form-hint">Proper format user@domain.com</span>
+    </li>
+    <li>
+      <%= f.label :password %>
+      <%= f.password_field :password, required: true %>
+      <span class="form-hint">Password should be 6 or more characters</span>
+    </li>
+    <li>
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, required: true %>
+    </li>
+    <li>
+      <button class="submit" type="submit">Create Account</button>
+    </li>
+  </ul>
+
+<% end %>
