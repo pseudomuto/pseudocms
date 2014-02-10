@@ -1,5 +1,14 @@
 *:focus {outline: none;}
 
+.flash.error, .field_with_errors input {
+  background-color: pink;
+  border: solid 1px #f00;
+}
+
+.flash {
+  padding: 0 20px;
+}
+
 form {
   h2, label {
     font-family: Georgia, Times, "Times New Roman", serif;

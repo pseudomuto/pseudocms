@@ -21,6 +21,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal admin_path, path
   end
 
+  test 'sign up with existing user account' do
+    User.create(params[:user])
+    post_via_redirect sign_up_path, params
+    assert_equal new_user_path, path
+    assert_includes body, 'Email has already been taken'
+  end
+
   test "sign up without entering email address" do
     params[:user][:email] = ''
     post_via_redirect sign_up_path, params

@@ -31,4 +31,19 @@ class AccountControllerTest < ActionController::TestCase
     assert_template :index
     assert_not_nil flash[:error]
   end
+
+  test 'POST #create renders errors with invalid data' do
+    user = User.create(
+      email: 'pseudomuto@pseudocms.com',
+      password: 'my password',
+      password_confirmation: 'my password'
+    )
+
+    assert_no_difference('User.count') do
+      post :create, user: user.attributes
+    end
+
+    assert_not_nil flash[:error]
+    assert_not_empty assigns(:user).errors.full_messages
+  end
 end
