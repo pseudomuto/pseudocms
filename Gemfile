@@ -25,6 +25,10 @@ group :development, :test do
   gem 'mysql2'
 end
 
+group :test do
+  gem 'rake'
+end
+
 group :production do
   gem 'rails_12factor'
   gem 'pg'
