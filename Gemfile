@@ -2,16 +2,22 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.3'
 gem 'unicorn-rails'
-gem 'mysql2'
-
 gem 'foreman'
 
+gem 'ember-rails'
+gem 'ember-source'
+gem 'ember_script-rails', github: 'ghempton/ember-script-rails'
 gem 'jquery-rails'
 
 group :assets do
   gem 'sass-rails', '~> 4.0.0'
   gem 'uglifier', '>= 1.3.0'
   gem 'coffee-rails', '~> 4.0.0'
+end
+
+group :development, :test do
+  gem 'mysql2'
+  gem 'qunit-rails'
 end
 
 group :production do
