@@ -1,0 +1,10 @@
+---
+language: ruby
+rvm:
+  - 2.1.0
+before_install:
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+before_script:
+  - bundle exec rake db:migrate
+script:
+  - bundle exec rake test

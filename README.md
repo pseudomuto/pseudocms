@@ -1,4 +1,7 @@
-== README
+# PseudoCMS
+
+[![Build
+Status](https://travis-ci.org/pseudomuto/pseudocms.png?branch=user_signup)](https://travis-ci.org/pseudomuto/pseudocms)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
