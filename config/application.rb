@@ -22,5 +22,7 @@ module Pseudocms
 
     config.ember.variant = :development
     config.handlebars.templates_root = 'admin/templates'
+
+    config.assets.precompile << 'admin/admin.js'
   end
 end
