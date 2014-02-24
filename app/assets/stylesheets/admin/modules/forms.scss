@@ -1,0 +1,139 @@
+*:focus {outline: none;}
+
+.flash.error, .field_with_errors input {
+  background-color: pink;
+  border: solid 1px #f00;
+}
+
+.flash {
+  padding: 0 20px;
+}
+
+form {
+  h2, label {
+    font-family: Georgia, Times, "Times New Roman", serif;
+  }
+
+  ul {
+    width: 750px;
+    list-style-type: none;
+    list-style-position: outside;
+    margin: 0 auto;
+    padding: 0;
+
+    li{
+      padding:12px;
+      border-bottom:1px solid #eee;
+      position:relative;
+
+      &:first-child, &:last-child {
+        border-bottom:1px solid #777;
+      }
+    }
+  }
+
+  h2 {
+    margin:0;
+    display: inline;
+  }
+
+  label {
+    width: 150px;
+    margin-top: 3px;
+    display: inline-block;
+    float: left;
+    padding: 3px;
+  }
+
+  input {
+    height: 20px;
+    width: 220px;
+    padding: 5px 8px;
+  }
+
+  textarea {
+    padding: 8px;
+    width: 300px;
+  }
+
+  button:first-of-type {
+    margin-left:156px;
+  }
+
+    /* form element visual styles */
+  input, textarea {
+    border:1px solid #aaa;
+    box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
+    border-radius:2px;
+    padding-right:30px;
+    -moz-transition: padding .25s;
+    -webkit-transition: padding .25s;
+    -o-transition: padding .25s;
+    transition: padding .25s;
+
+    &:focus {
+      background: #fff;
+      border: 1px solid #555;
+      box-shadow: 0 0 3px #aaa;
+      padding-right: 70px;
+    }
+
+    &:required {
+      background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACpQTFRF+M7O6Wxt+djY63Z3/vX18qeo7ICA++Hi/Ovr75OU8Z2e7omK6GJj////SyXd4gAAAEtJREFUeNqczksKgEAMA9D0Nx/N3P+6uqplQBC7fIGkWNvhM2jfgGeFO7ZYGAmNZk0YCQOTDPjT0WVK81Jq4sqjgGvu4f/r73AJMAA5UgvJnpeyCQAAAABJRU5ErkJggg==) no-repeat 98% center;
+    }
+
+    &:required:valid {
+      background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAASdJREFUeNpiibkQzEAJYMIhngnEB4D4PxI+ABXHa4AiVOE0ILZHk7OHih+AqgMDFiQFckB8Hoj5CbjaHqpOD4gfIbtgPhGaYYAfqh7uhVggdiIx/EDqY2EGJBBS3SFXxNAqm4sunAAzwBif5na5AgYJbisGZkZ2dCljkAHM6H5frL+GYbb6QjC7VTabQZrPhuH518MMFY96MMICZMBfIH6NLBp7MQQo+J1hoc4aBhl+R4YnHw8xVD6aiM1xr2FeuIkuk3Ezg+Hnnw8Mzz4eZah6PAmX727C0sFcILZBl027kUIobOfCXLAYiC+QGI0g9YthBoDCIRQ9LPCA11D1f5FT4h0gtiLCJReg6u5gy0wgQUMgjgbiTUD8FCr+FMqPhsrfgWkACDAAdeFJlrFXYEcAAAAASUVORK5CYII=) no-repeat 98% center;
+      box-shadow: 0 0 5px #5cd053;
+      border-color: #28921f;
+    }
+
+    &:focus:invalid {
+      background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUpJREFUeNpivBIUxEAJYMIhngnEB4D4PxLeBcQJhAxQhGqcBsT2aHKuQDwfiLcDsTQ2A3SB+CqyRmY+PgYmDg4wjQQ8gPgSEKsgG8AGxOuAmBNZJYugIAOPlRUDm7g4usuFgHg1yA6YAckwE5EBt64ug2x2NgOPtTW2cDIA4kCYAVF4g5qREZdMAhOS/zHA70+fGP7+B0bA16+4DNCFGcCPTfbv+/cMf37+ZPj98SMuA/hhBrzGJvsHaMCHrVsZfj16hMuA1zADLmNNZcAo/PvlC8N/3GFwGWbAAmyyXJqaDJLx8Qx85ua4DJgLM2AZEJ/FCMQXLxi+XL7M8OvhQ2yaDwLxVkakzARKxseAWAIl+kCxAKMRABQoJshhAAL3gRjk1uNwEZgmVM37oOrAAc+C5iyQyVZA7A3NeYrQNAIK5JvQsNqNrAEgwAAO6VaUCoOyHgAAAABJRU5ErkJggg==) no-repeat 98% center;
+      box-shadow: 0 0 5px #d45252;
+      border-color: #b03535
+    }
+  }
+
+  .form-hint, .required-notification {
+    font-size: 11px;
+  }
+
+  .form-hint {
+    background: #d45252;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    margin-left:8px;
+    padding: 1px 6px;
+    z-index: 999; /* hints stay above all other elements */
+    position: absolute; /* allows proper formatting if hint is two lines */
+    display: none;
+
+    &:before {
+      content: "\25C0";
+      color: #d45252;
+      position: absolute;
+      top: 1px;
+      left: -6px;
+    }
+  }
+
+  input:focus + .form-hint {
+    display: inline;
+  }
+
+  input:required:valid + .form-hint {
+    background: #28921f;
+  }
+
+  input:required:valid + .form-hint::before {
+    color: #28921f;
+  }
+
+  .required-notification {
+    color:#d45252;
+    margin:5px 0 0 0;
+    display:inline;
+    float:right;
+  }
+}

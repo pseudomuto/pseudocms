@@ -1,0 +1,17 @@
+.page {
+  > header {
+    background-color: #000;
+    height: 60px;
+
+    h1 {
+      color: #fff;
+      float: left;
+      margin-top: 8px;
+    }
+  }
+
+  .container {
+    width: 960px;
+    margin: 0 auto;
+  }
+}
