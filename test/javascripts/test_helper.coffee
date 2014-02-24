@@ -1,4 +1,6 @@
 #= require admin/admin
+#= require sinon
+#= require sinon-qunit
 #= require_self
 #= require_tree .
 
