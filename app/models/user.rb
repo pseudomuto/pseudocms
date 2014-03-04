@@ -9,10 +9,17 @@ class User < ActiveRecord::Base
     format: { with: EMAIL_REGEX },
     uniqueness: { case_sensitive: false }
 
-  def self.validate(email, password)
-    user = User.find_by(email: email)
-    return nil unless user
+  def self.new_login_token
+    SecureRandom.urlsafe_base64
+  end
 
-    user.authenticate(password) ? user : nil
+  def self.encrypt(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  def generate_token
+    token = User.new_login_token
+    update_attribute(:login_token, User.encrypt(token))
+    token
   end
 end

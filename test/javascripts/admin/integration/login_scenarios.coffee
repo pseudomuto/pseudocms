@@ -1,18 +1,25 @@
-module 'admin login scenarios', QUNIT_MODULE
+integration('login form')
 
 test '/login route', ->
   expect(2)
 
-  visit('/login').then ->
+  visit('/login')
+  andThen ->
     equal(currentPath(), 'login')
     equal(currentRouteName(), 'login')
 
 test 'displays error with invalid credentials', ->
-  expects(2)
+  expect(2)
+
+  stubRequest '/token',
+    status: 401
+    responseText:
+      error: 'Bad Creds'
+
   visit('/login')
-  fillIn('#email', 'some@user.com')
+  fillIn('#email', 'some@userguy.com')
   fillIn('#password', 'pAssword1')
-  click('.submit')
+  click('button.submit')
   andThen ->
     equal(currentURL(), '/login')
-    ok exists('p'), 'Invalid username or password.'
+    ok(exists('p:contains("Bad Creds")'), 'error message displayed')

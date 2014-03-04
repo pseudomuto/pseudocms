@@ -39,17 +39,9 @@ class UserTest < ActiveSupport::TestCase
     refute @user.valid?
   end
 
-  test '.validate returns the user when valid' do
+  test '.generate_token returns and stores encrypted token' do
     @user.save!
-    assert_equal @user, User.validate(@user.email, @user.password)
-  end
-
-  test '.validate returns nil with invalid password' do
-    @user.save!
-    refute User.validate(@user.email, 'bad password')
-  end
-
-  test '.validate returns nil when user not found' do
-    refute User.validate('who@ami.com', 'some password')
+    User.stubs(:encrypt).returns('').once
+    assert_not_nil @user.generate_token
   end
 end

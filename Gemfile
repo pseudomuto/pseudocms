@@ -20,6 +20,8 @@ end
 group :development, :test do
   gem 'mysql2'
   gem 'qunit-rails'
+  gem 'mocha', require: false
+  gem 'pry'
 end
 
 group :production do

@@ -1,25 +1,26 @@
-{{#view Admin.LoginFormView}}
+<form {{action 'authenticate' on='submit'}}>
   <ul>
     <li>
       <h2>Login</h2>
       <span class="required-notification">* denotes required field</span>
     </li>
-    {{#if loginFailed}}
+    {{#if errorMessage}}
     <li>
-      <p>Invalid username or password.</p>
+      <p>Error: {{errorMessage}}</p>
     </li>
     {{/if}}
     <li>
-    <label for="email">Username/Email:</label>
-      <input type="email" id="email" placeholder="user@example.com" required="true">
+      <label for="identification">Username/Email:</label>
+      {{input type="email" id="email" placeholder="user@example.com" required="true"
+      value=identification}}
     </li>
     <li>
       <label for="password">Password:</label>
-      <input type="password" id="password" required="true">
+      {{input type="password" id="password" required="true" value=password}}
     </li>
     <li>
-      <button type="submit" class="btn submit" {{bindAttr disabled="isProcessing"}}>Login</button>
+      <button type="submit" class="btn submit">Login</button>
       <button class="btn">Forgot Password?</button>
     </li>
   </ul>
-{{/view}}
+</form>

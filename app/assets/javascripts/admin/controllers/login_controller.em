@@ -1,24 +1,13 @@
-class Admin.LoginController extends Ember.ObjectController
-  isProcessing: false
-  loginFailed: false
-
-  login: (email, password) ->
-    @setProperties(
-      isProcessing: true
-    )
-
-    request = $.post('/login', { email: email, password: password })
-    request.then @_success.bind(this), @_failure.bind(this)
-  
-  _success: (result) ->
-    @_reset()
-    @transitionTo('/')
-
-  _failure: (result) ->
-    @_reset()
-    @set('loginFailed', true)
-
-  _reset: ->
-    @setProperties(
-      isProcessing: false
-    )
+class Admin.LoginController extends Ember.Controller with Ember.SimpleAuth.LoginControllerMixin
+  actions:
+    sessionAuthenticationFailed: (error) ->
+      msg = JSON.parse(error).error
+      @set('errorMessage', msg)
+    closeMessage: ->
+      @set('errorMessage', null)
+ 
+  reset: ->
+    @setProperties
+      errorMessage: null
+      identification: null
+      password: null

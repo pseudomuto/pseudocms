@@ -1,17 +1,38 @@
 controller = null
+spy = null
 
 module 'login controller',
   setup: ->
-    Ember.run(Admin, Admin.advanceReadiness)
     controller = Admin.__container__.lookup('controller:login')
+    spy = sinon.spy(jQuery, 'ajax')
 
   teardown: ->
-    Admin.reset()
+    jQuery.ajax.restore()
 
-test '#login posts to /login', ->
-  expect(2)
-  @spy(jQuery, 'ajax')
+test '#reset sets default property values', ->
+  controller.setProperties
+    identification: 'some@user.com'
+    password: 'pAssword1'
+    errorMessage: 'some message'
 
-  controller.login('me@somesite.com', 'password')
-  ok(jQuery.ajax.calledOnce)
-  equal(jQuery.ajax.getCall(0).args[0].url, '/login')
+  controller.reset()
+  equal(controller.get('errorMessage'), null)
+  equal(controller.get('identification'), null)
+  equal(controller.get('password'), null)
+
+test '#authenticate posts to /token', ->
+  stubRequest '/token',
+    responseText:
+      access_token: 'some_token'
+      token_type: 'bearer'
+
+  controller.setProperties
+    identification: 'some@user.com'
+    password: 'pAssword1'
+
+  controller.send('authenticate')
+  ok(spy.calledOnce)
+
+test '#authenticate skips the call when credentials are not supplied', ->
+  controller.send('authenticate')
+  equal(spy.called, false)

@@ -4,4 +4,6 @@ Pseudocms::Application.routes.draw do
   namespace :admin do
     root to: 'main#index'
   end
+
+  post :token, to: 'sessions#create'
 end
