@@ -1,5 +1,8 @@
-module 'home page', QUNIT_MODULE
+integration('home page')
 
-test 'displays welcome message', ->
-  visit('/').then ->
-    ok exists('h1'), 'Welcome to the Admin!'
+test 'redirects to login screen when not authenticated', ->
+  expect(1)
+
+  visit('/')
+  andThen ->
+    equal(currentURL(), '/login')

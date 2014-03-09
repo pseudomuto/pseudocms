@@ -1,0 +1,32 @@
+.btn {
+  @include linear-gradient(#9ea39a, #9ea3ad);
+  border: 1px solid #9ea3ad;
+  border-bottom: 1px solid #9ea3ad;
+  @include border-radius(3px);
+  @include box-shadow(0, 1px, 0, 0, #9fd574);
+  color: #fff;
+  font-weight: bold;
+  padding: 6px 20px;
+  text-align: center;
+  text-shadow: 0 -1px 0 #396715;
+
+  &:hover {
+    opacity:.85;
+    cursor: pointer;
+  }
+
+  &:active {
+    border: 1px solid #20911e;
+    @include box-shadow(0, 0, 10px, 5px, #356b0b);
+  }
+
+  &.submit, &.primary {
+    color: #fff;
+    @include linear-gradient(#68b12f, #50911e);
+
+    &:active {
+      border: 1px solid #20911e;
+      @include box-shadow(0, 0, 10px, 5px, #356b0b);
+    }
+  }
+}

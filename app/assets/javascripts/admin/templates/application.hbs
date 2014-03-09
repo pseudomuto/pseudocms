@@ -1,11 +1,21 @@
-<header>
-  <p>Header Element</p>
-</header>
+<div class="page">
+  <header>
+    <div class="container">
+      <h1>{{#link-to 'index'}}pseudocms{{/link-to}}</h1>
+      <nav>
+        <ul>
+          <li><a href="#">about</a></li>
+          {{#if session.isAuthenticated }}
+          <li><a href="#" {{action 'invalidateSession'}}>logout</a></li>
+          {{/if}}
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-<section class="page">
-  {{outlet}}
-</section>
-
-<footer>
-  <p>Footer Element</p>
-</footer>
+  <section class="content">
+    <div class="container">
+      {{outlet}}
+    </div>
+  </section>
+</div>

@@ -2,6 +2,7 @@
 #= require handlebars
 #= require ember
 #= require ember-data
+#= require ember-simple-auth
 #= require_self
 #= require ./store
 #= require_tree ./models
@@ -11,6 +12,12 @@
 #= require_tree ./templates
 #= require_tree ./routes
 #= require ./router
+
+Ember.Application.initializer
+  name: 'authentication'
+  initialize: (container, application) ->
+    Ember.SimpleAuth.setup(container, application)
+
 
 window.Admin = Ember.Application.create()
   #LOG_TRANSITIONS: true

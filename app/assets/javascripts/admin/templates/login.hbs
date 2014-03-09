@@ -1,0 +1,26 @@
+<form {{action 'authenticate' on='submit'}}>
+  <ul>
+    <li>
+      <h2>Login</h2>
+      <span class="required-notification">* denotes required field</span>
+    </li>
+    {{#if errorMessage}}
+    <li>
+      <p>Error: {{errorMessage}}</p>
+    </li>
+    {{/if}}
+    <li>
+      <label for="identification">Username/Email:</label>
+      {{input type="email" id="email" placeholder="user@example.com" required="true"
+      value=identification}}
+    </li>
+    <li>
+      <label for="password">Password:</label>
+      {{input type="password" id="password" required="true" value=password}}
+    </li>
+    <li>
+      <button type="submit" class="btn submit">Login</button>
+      <button class="btn">Forgot Password?</button>
+    </li>
+  </ul>
+</form>
