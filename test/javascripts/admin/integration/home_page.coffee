@@ -1,7 +1,8 @@
 integration('home page')
 
-test 'displays welcome message', ->
+test 'redirects to login screen when not authenticated', ->
   expect(1)
+
   visit('/')
   andThen ->
-    ok exists('h1:contains("Welcome to the Admin")')
+    equal(currentURL(), '/login')

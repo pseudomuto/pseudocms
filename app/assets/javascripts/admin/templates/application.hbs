@@ -1,7 +1,15 @@
 <div class="page">
   <header>
     <div class="container">
-      <h1>pseudocms</h1>
+      <h1>{{#link-to 'index'}}pseudocms{{/link-to}}</h1>
+      <nav>
+        <ul>
+          <li><a href="#">about</a></li>
+          {{#if session.isAuthenticated }}
+          <li><a href="#" {{action 'invalidateSession'}}>logout</a></li>
+          {{/if}}
+        </ul>
+      </nav>
     </div>
   </header>
 
