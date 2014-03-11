@@ -5,4 +5,4 @@ test 'redirects to login screen when not authenticated', ->
 
   visit('/')
   andThen ->
-    equal(currentURL(), '/login')
+    equal(currentRouteName(), 'login')
