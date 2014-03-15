@@ -1,1 +1,57 @@
-<h1>Welcome to the Admin!</h1>
+<header>
+  <h1>Home Page</h1>
+
+  <div class="buttons">
+    <a href="#" class="btn">Do something</a>
+    <a href="#" class="btn primary">Main Thing</a>
+  </div>
+</header>
+
+<section class="body">
+  <h2>Tables</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Long Thing</th>
+        <th><!-- actions --></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#times 10}}
+      <tr>
+        <td>Some Name</td>
+        <td>Some Type</td>
+        <td>Some long bit here...</td>
+        <td>
+          <a href="#"><span class="fa fa-edit"></span></a>
+        </td>
+      </tr>
+      {{/times}}
+    </tbody>
+  </table>
+
+  <form>
+    <ul>
+      <li>
+        <h2>Forms</h2>
+        <span class="required-notification">*denotes a required field</span>
+      </li>
+      <li>
+        <label>Text Field:</label>
+        {{input type="text" required="true"}}
+        <span class="form-hint">You can put hints here</span>
+      </li>
+      <li>
+        <label>Textarea Field:</label>
+        {{textarea}}
+      </li>
+      <li>
+        <label>Dropdown Field:</label>
+        {{site-list}}
+      </li>
+    </ul>
+  </form>
+</section>

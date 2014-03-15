@@ -8,7 +8,7 @@ gem 'ember-rails'
 gem 'ember-source'
 gem 'ember_script-rails', github: 'ghempton/ember-script-rails'
 gem 'jquery-rails'
-
+gem 'font-awesome-rails'
 gem 'bcrypt-ruby'
 
 group :assets do

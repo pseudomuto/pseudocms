@@ -2,11 +2,15 @@
  *= require normalize
  *= require_self
  */
+@import "admin/variables";
 
+@import "font-awesome.css";
 @import "mixins/gradients";
 @import "mixins/borders";
 
-@import "admin/layout/page";
-
+@import "admin/modules/containers";
 @import "admin/modules/buttons";
 @import "admin/modules/forms";
+@import "admin/modules/tables";
+
+@import "admin/layout/page";

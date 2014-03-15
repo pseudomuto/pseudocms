@@ -47,7 +47,7 @@ form {
     padding: 3px;
   }
 
-  input {
+  input, select {
     height: 20px;
     width: 220px;
     padding: 5px 8px;
@@ -63,7 +63,7 @@ form {
   }
 
     /* form element visual styles */
-  input, textarea {
+  input, textarea, select {
     border:1px solid #aaa;
     box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
     border-radius:2px;
@@ -120,15 +120,15 @@ form {
     }
   }
 
-  input:focus + .form-hint {
+  input:focus + .form-hint, select:focus + .form-hint {
     display: inline;
   }
 
-  input:required:valid + .form-hint {
+  input:required:valid + .form-hint, select:required:valid + .form-hint {
     background: #28921f;
   }
 
-  input:required:valid + .form-hint::before {
+  input:required:valid + .form-hint::before, select:required:valid + .form-hint::before {
     color: #28921f;
   }
 

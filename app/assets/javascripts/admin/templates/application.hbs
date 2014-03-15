@@ -1,21 +1,27 @@
 <div class="page">
-  <header>
-    <div class="container">
-      <h1>{{#link-to 'index'}}pseudocms{{/link-to}}</h1>
+  <section id="navigation" class="container">
+    <div class="top">
+      <!--<div id="profile">-->
+        <!--<span class="image avatar48"><img src="images/avatar.jpg" alt=""></span>-->
+        <!--<h1 id="title">David Muto</h1>-->
+        <!--<a href="#" {{action 'invalidateSession'}}>logout</a>-->
+      <!--</div>-->
+
       <nav>
         <ul>
-          <li><a href="#">about</a></li>
-          {{#if session.isAuthenticated }}
-          <li><a href="#" {{action 'invalidateSession'}}>logout</a></li>
-          {{/if}}
+          <li><a class="active" href="#"><span class="fa fa-home">Home</span></a></li>
+          <li><a href="#"><span class="fa fa-github">GitHub</span></a></li>
+          <li><a href="#"><span class="fa fa-th">Portfilio</span></a></li>
         </ul>
       </nav>
     </div>
-  </header>
-
-  <section class="content">
-    <div class="container">
-      {{outlet}}
+    <div class="bottom">
+      <a href="#" {{action 'invalidateSession'}}>logout</a>
     </div>
   </section>
+
+  <section id="main">
+    {{ outlet }}
+  </section>
+
 </div>
