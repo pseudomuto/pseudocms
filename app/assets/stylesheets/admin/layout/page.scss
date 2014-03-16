@@ -1,15 +1,21 @@
-.clearfix:before,
-.clearfix:after {
-  content: " "; /* 1 */
-  display: table; /* 2 */
-}
+body.login {
+  background-color: $darkBackground;
 
-.clearfix:after {
-  clear: both;
+  .login-page {
+    /*background-color: #fff;*/
+    margin: 0 auto;
+  }
+
+  form {
+    margin-top: 120px;
+    ul {
+      background-color: #fff;
+      width: 640px;
+    }
+  }
 }
 
 .page {
-
   header {
     border-bottom: 1px solid $darkBackground;
     padding: 0 20px;

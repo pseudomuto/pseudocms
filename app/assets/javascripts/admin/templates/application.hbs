@@ -1,3 +1,4 @@
+{{#if session.isAuthenticated}}
 <div class="page">
   <section id="navigation" class="container">
     <div class="top">
@@ -21,7 +22,11 @@
   </section>
 
   <section id="main">
-    {{ outlet }}
+    {{outlet}}
   </section>
-
 </div>
+{{else}}
+<div class="login-page">
+  {{outlet}}
+</div>
+{{/if}}
