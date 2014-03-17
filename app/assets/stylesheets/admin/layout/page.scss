@@ -114,6 +114,12 @@ body.login {
             color: $primaryHighlight;
           }
         }
+
+        &:hover {
+          span:before {
+            color: $primaryHighlight;
+          }
+        }
       }
     }
 
@@ -121,10 +127,10 @@ body.login {
 
   #main {
     margin-left: 260px;
-
-    .body {
-      clear: both;
-      padding: 20px;
-    }
+  }
+  
+  .body {
+    clear: both;
+    padding: 20px;
   }
 }
