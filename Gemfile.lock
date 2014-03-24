@@ -74,6 +74,8 @@ GEM
     ember_script-source (0.0.14)
     erubis (2.7.0)
     execjs (2.0.2)
+    font-awesome-rails (4.0.3.1)
+      railties (>= 3.2, < 5.0)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
@@ -170,6 +172,7 @@ DEPENDENCIES
   ember-rails
   ember-source
   ember_script-rails!
+  font-awesome-rails
   foreman
   jquery-rails
   mocha

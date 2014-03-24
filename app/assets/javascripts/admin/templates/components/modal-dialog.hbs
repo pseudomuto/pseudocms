@@ -1,0 +1,14 @@
+<div class="overlay">
+  <div class="modal">
+    <header>
+      <h1>Some Title</h1>
+      <div class="buttons">
+        <a href="#" {{action "close"}}><span class="fa fa-times"></span></a>
+      </div>
+    </header>
+
+    <section class="body">
+      {{yield}}
+    </section>
+  </div>
+</div>

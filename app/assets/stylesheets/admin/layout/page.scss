@@ -1,52 +1,136 @@
-.page {
-  box-sizing: border-box;
+body.login {
+  background-color: $darkBackground;
 
-  > header {
-    background-color: #000;
-    height: 60px;
+  .login-page {
+    /*background-color: #fff;*/
+    margin: 0 auto;
+  }
 
-    a {
-      color: #fff;
-      text-decoration: none;
+  form {
+    margin-top: 120px;
+    ul {
+      background-color: #fff;
+      width: 640px;
     }
+  }
+}
+
+.page {
+  header {
+    border-bottom: 1px solid $darkBackground;
+    padding: 0 20px;
 
     h1 {
       float: left;
-      margin-top: 8px;
+      font-size: 1.1em;
     }
 
-    nav {
+    .buttons {
       float: right;
-      padding-right: 20px;
+      margin-top: 14px;
+    }
 
-      ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+    &:after {
+      content: " ";
+      display: table;
+      clear: both;
+    }
+  }
 
-        li {
-          float: left;
+  #navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100%;
+    background-color: #222729;
+    box-shadow: inset -0.25em 0 0.25em 0 rgba(0,0,0,0.125);
+    color: #fff;
+    text-align: right;
+    font-size: 17pt;
 
-          a {
-            display: block;
-            padding: 0 20px;
-            height: 60px;
-            line-height: 63px;
-            font-size: 14px;
+    #profile {
+      position: relative;
+      margin: 1.75em 1.5em 1.5em 1.5em;
+      min-height: 48px;
+      cursor: default;
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      h1 {
+        position: relative;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1em;
+        line-height: 1em;
+      }
+
+      a {
+        position: relative;
+        display: block;
+        font-size: 0.6em;
+        color: rgba(255,255,255,0.5);
+        line-height: 1.25em;
+        margin: 0.5em 0 0 0;
+      }
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+
+      li a {
+        display: block;
+        padding: 0.5em 1.5em 0.5em 1.5em;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        outline: 0;
+        border: 0;
+
+        span {
+          position: relative;
+          display: block;
+          font-size: 0.8em;
+
+          &:before {
+            position: absolute;
+            left: 0;
+            color: $darkBackground;
             text-align: center;
-            text-transform: uppercase;
+            width: 1.25em;
+          }
+        }
 
-            &:hover {
-              background-color: grey;
-            }
+        &.active {
+          background: rgba(0,0,0,0.15);
+          box-shadow: inset 0 0 0.25em 0 rgba(0,0,0,0.125);
+          color: #fff;
+
+          span:before {
+            color: $primaryHighlight;
+          }
+        }
+
+        &:hover {
+          span:before {
+            color: $primaryHighlight;
           }
         }
       }
     }
+
   }
 
-  .container {
-    width: 960px;
-    margin: 0 auto;
+  #main {
+    margin-left: 260px;
+  }
+  
+  .body {
+    clear: both;
+    padding: 20px;
   }
 }

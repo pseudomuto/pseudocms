@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       token = user.generate_token
       render json: { access_token: token, token_type: 'bearer' }
     else
-      render json: { error: 'Invalid email or password.' }, status: :unauthorized
+      render json: { message: 'Invalid email or password.' }, status: :unauthorized
     end
   end
 

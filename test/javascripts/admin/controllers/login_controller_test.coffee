@@ -1,4 +1,4 @@
-controller('login')
+@controller('login')
 
 test '#reset sets default property values', ->
   @controller.setProperties

@@ -1,21 +1,31 @@
+{{#if session.isAuthenticated}}
 <div class="page">
-  <header>
-    <div class="container">
-      <h1>{{#link-to 'index'}}pseudocms{{/link-to}}</h1>
+  <section id="navigation" class="container">
+    <div class="top">
+      <div id="profile">
+        <img src="http://www.gravatar.com/avatar/2cf9c90cc7eb61ee14be216aea33a2be.png?size=60"
+        alt="David Muto">
+        <h1 id="title">Signed In</h1>
+        <a href="#" {{action 'invalidateSession'}}>logout</a>
+      </div>
+
       <nav>
         <ul>
-          <li><a href="#">about</a></li>
-          {{#if session.isAuthenticated }}
-          <li><a href="#" {{action 'invalidateSession'}}>logout</a></li>
-          {{/if}}
+          <li><a class="active" href="#"><span class="fa fa-home">Home</span></a></li>
+          <li><a href="#"><span class="fa fa-github">GitHub</span></a></li>
+          <li><a href="#"><span class="fa fa-th">Portfilio</span></a></li>
         </ul>
       </nav>
     </div>
-  </header>
-
-  <section class="content">
-    <div class="container">
-      {{outlet}}
-    </div>
   </section>
+
+  <section id="main">
+    {{outlet}}
+  </section>
+  {{outlet modal}}
 </div>
+{{else}}
+<div class="login-page">
+  {{outlet}}
+</div>
+{{/if}}
