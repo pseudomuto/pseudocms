@@ -7,3 +7,7 @@ class Admin.LoginRoute extends Ember.Route
 
   setupController: (controller, model) ->
     controller.reset()
+
+  actions:
+    sessionAuthenticationFailed: (response) ->
+      @controller.set('errorMessage', response.message)

@@ -18,11 +18,13 @@
 Ember.Application.initializer
   name: 'authentication'
   initialize: (container, application) ->
-    Ember.SimpleAuth.setup(container, application)
+    Ember.SimpleAuth.setup container, application, 
+      authenticationRoute: 'login'
+      routeAfterAuthentication: 'index'
 
 
-window.Admin = Ember.Application.create()
-  #LOG_TRANSITIONS: true
+window.Admin = Ember.Application.create
+  LOG_TRANSITIONS: true
   #LOG_TRANSITIONS_INTERNAL: true
   #LOG_ACTIVE_GENERATION: true
   #LOG_VIEW_LOOKUPS: true

@@ -7,13 +7,14 @@ test 'redirects to root on successful login', ->
       access_token: 'some_token'
       token_type: 'bearer'
 
-  visit('/login')
-  fillIn('#email', 'some@userguy.com')
-  fillIn('#password', 'pAssword1')
-  click('button.submit')
-  andThen ->
-    equal(currentURL(), '/')
-    ok(exists('nav a:contains("logout")'), 'adds logout option')
+  Ember.run ->
+    visit('/login')
+    fillIn('#email', 'some@userguy.com')
+    fillIn('#password', 'pAssword1')
+    click('button.submit')
+    andThen ->
+      equal(currentRouteName(), 'index')
+      ok(exists('#profile a:contains("logout")'), 'adds logout option')
 
 test 'displays error with invalid credentials', ->
   expect(2)
@@ -21,12 +22,13 @@ test 'displays error with invalid credentials', ->
   stubRequest '/token',
     status: 401
     responseText:
-      error: 'Bad Creds'
+      message: 'Bad Creds'
 
-  visit('/login')
-  fillIn('#email', 'some@userguy.com')
-  fillIn('#password', 'pAssword1')
-  click('button.submit')
-  andThen ->
-    equal(currentURL(), '/login')
-    ok(exists('p:contains("Bad Creds")'), 'error message displayed')
+  Ember.run ->
+    visit('/login')
+    fillIn('#email', 'some@userguy.com')
+    fillIn('#password', 'pAssword1')
+    click('button.submit')
+    andThen ->
+      equal(currentRouteName(), 'login')
+      ok(exists('p:contains("Bad Creds")'), 'error message displayed')

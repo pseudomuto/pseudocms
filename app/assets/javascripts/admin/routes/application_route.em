@@ -9,6 +9,3 @@ class Admin.ApplicationRoute extends Ember.Route with Ember.SimpleAuth.Applicati
       @disconnectOutlet
         outlet: 'modal'
         parentView: 'application'
-
-    sessionInvalidationSucceeded: ->
-      window.location.replace('/admin')
