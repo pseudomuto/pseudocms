@@ -1,13 +1,11 @@
 @integration = (name) ->
   module "Integration: #{name}",
     setup: ->
-      Ember.run(Admin, Admin.advanceReadiness)
+      Admin.reset()
 
     teardown: ->
       Ember.run ->
         signout()
-
-      Admin.reset()
 
 @controller = (type, name) ->
   name = type unless name
@@ -23,4 +21,3 @@
 
     teardown: ->
       jQuery.ajax.restore()
-      Admin.reset()
