@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+echo "Setting up heroku..."
+git remote add staging git@heroku.com:pseudocms-staging.git
+git remote add production git@heroku.com:pseudocms.git
+
+source script/bootstrap
