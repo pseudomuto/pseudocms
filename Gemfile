@@ -11,6 +11,7 @@ gem 'ember_script-rails', github: 'ghempton/ember-script-rails'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'bcrypt-ruby'
+gem 'sprockets_better_errors'
 
 group :assets do
   gem 'sass-rails', '~> 4.0.0'

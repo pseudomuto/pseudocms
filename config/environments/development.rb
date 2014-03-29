@@ -28,4 +28,5 @@ Pseudocms::Application.configure do
   config.assets.debug = true
 
   config.ember.variant = :development
+  config.assets.raise_production_errors = true
 end
