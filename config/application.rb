@@ -20,9 +20,7 @@ module Pseudocms
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.ember.variant = :development
+    config.ember.variant = :production
     config.handlebars.templates_root = 'admin/templates'
-
-    config.assets.precompile += %w(admin/admin.js, admin.css)
   end
 end
