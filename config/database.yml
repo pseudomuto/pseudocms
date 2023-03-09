@@ -1,0 +1,14 @@
+---
+development: &default
+  dialect: cockroach
+  database: pseudocms_dev
+  user: root
+  password: ''
+  host: localhost
+  pool: 5
+  options:
+    sslmode: disable
+
+test: &test
+  <<: *default
+  database: pseudocms_test

@@ -1,0 +1,21 @@
+create_table("definitions") {
+  t.Column("id", "uuid", {primary: true})
+	t.Column("name", "string", {size:200})
+	t.Column("description", "string", {size:1000})
+	t.Timestamps()
+}
+
+add_index("definitions", "name", {unique: true})
+
+create_table("fields") {
+  t.Column("id", "uuid", {primary: true})
+	t.Column("definition_id", "uuid", {})
+	t.Column("name", "string", {size:200})
+	t.Column("description", "string", {size:1000})
+	t.Column("kind", "string", {size:100})
+	t.Column("constraints", "string", {null: true, size:2000})
+	t.ForeignKey("definition_id", {"definitions": ["id"]}, {"on_delete": "cascade"})
+}
+
+add_index("fields", "definition_id")
+add_index("fields", ["definition_id", "name"], {unique: true})
