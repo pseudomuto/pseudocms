@@ -1,0 +1,22 @@
+syntax = "proto3";
+package api.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/pseudomuto/pseudocms/pkg/api/v1";
+
+service HealthService {
+  // Ping is used to test that the service is up and responding to requests.
+	rpc Ping(PingRequest) returns (PingResponse) {
+	  option (google.api.http) = {
+		  get: "/v1/ping"
+		};
+	}
+}
+
+message PingRequest {
+}
+
+message PingResponse {
+  string msg = 1;
+}
