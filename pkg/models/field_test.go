@@ -6,11 +6,42 @@ import (
 	"testing"
 
 	"github.com/gobuffalo/pop/v6/slices"
+	"github.com/gofrs/uuid"
+	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	. "github.com/pseudomuto/pseudocms/pkg/models"
 	"github.com/pseudomuto/pseudocms/pkg/testutil/factory"
 	"github.com/pseudomuto/pseudocms/pkg/validation"
 	"github.com/stretchr/testify/require"
 )
+
+func TestFieldKindToProto(t *testing.T) {
+	tests := map[FieldKind]v1.FieldType{
+		Float:         v1.FieldType_FIELD_TYPE_FLOAT,
+		Integer:       v1.FieldType_FIELD_TYPE_INT,
+		String:        v1.FieldType_FIELD_TYPE_STRING,
+		Text:          v1.FieldType_FIELD_TYPE_TEXT,
+		FieldKind(""): v1.FieldType_FIELD_TYPE_UNSPECIFIED,
+	}
+
+	for k, v := range tests {
+		require.Equal(t, v, k.ToProto())
+	}
+}
+
+func TestFieldKindFromProto(t *testing.T) {
+	tests := map[FieldKind]v1.FieldType{
+		Float:   v1.FieldType_FIELD_TYPE_FLOAT,
+		Integer: v1.FieldType_FIELD_TYPE_INT,
+		String:  v1.FieldType_FIELD_TYPE_STRING,
+		Text:    v1.FieldType_FIELD_TYPE_TEXT,
+	}
+
+	for k, v := range tests {
+		require.Equal(t, k, FieldKindFromProto(v))
+	}
+
+	require.Panics(t, func() { _ = FieldKindFromProto(v1.FieldType_FIELD_TYPE_UNSPECIFIED) })
+}
 
 func TestFieldAddConstraint(t *testing.T) {
 	field := Field{}
@@ -18,6 +49,35 @@ func TestFieldAddConstraint(t *testing.T) {
 
 	field.AddConstraint(validation.IsRequired(), validation.MinLength(3))
 	require.Equal(t, field.Constraints, slices.String{"required", "minLength(3)"})
+}
+
+func TestFieldFromProto(t *testing.T) {
+	proto := v1.Field{
+		Id:          uuid.Must(uuid.NewV4()).String(),
+		Name:        "test",
+		Description: "Some test field",
+		FieldType:   v1.FieldType_FIELD_TYPE_STRING,
+		Constraints: []string{"required", "minLength(3)"},
+	}
+
+	field := FieldFromProto(&proto)
+	require.Equal(t, proto.Id, field.ID.String())
+	require.Equal(t, proto.Name, field.Name)
+	require.Equal(t, proto.Description, field.Description)
+	require.Equal(t, FieldKindFromProto(proto.FieldType), field.Kind)
+	require.Equal(t, proto.Constraints, []string(field.Constraints))
+}
+
+func TestFieldToProto(t *testing.T) {
+	field := factory.Field.MustCreate().(Field)
+	field.AddConstraint(validation.IsRequired(), validation.MinLength(3))
+
+	proto := field.ToProto()
+	require.Equal(t, field.ID.String(), proto.Id)
+	require.Equal(t, field.Name, proto.Name)
+	require.Equal(t, field.Description, proto.Description)
+	require.Equal(t, field.Kind.ToProto(), proto.FieldType)
+	require.Equal(t, field.Constraints.Interface(), proto.Constraints)
 }
 
 func TestFieldValidate(t *testing.T) {

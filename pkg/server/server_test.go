@@ -15,7 +15,7 @@ import (
 
 func TestListenAndServe(t *testing.T) {
 	sigs, done := ListenAndServe(
-		":8091",
+		"localhost:8091",
 		WithLogger(logr.Discard()),
 	)
 

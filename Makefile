@@ -53,6 +53,9 @@ bin/buf: ## Install buf to ./bin
 		"https://github.com/bufbuild/buf/releases/download/v1.15.1/buf-$(OS)-$(ARCH)" \
 		-o ./bin/buf && chmod +x ./bin/buf
 
+bin/ctl: ## Build ctl to bin/pseudoctl
+	@go build -o bin/pseudoctl ./cmd/ctl
+
 bin/protoc-gen-go: ## Install protoc-gen-go
 	@GOBIN=$(abspath ./bin) go install google.golang.org/protobuf/cmd/protoc-gen-go
 

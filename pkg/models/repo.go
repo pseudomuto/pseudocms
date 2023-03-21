@@ -5,9 +5,6 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-// DefinitionRepo is a typealias used for generating mocks.
-type DefinitionRepo Repo[Definition]
-
 // NewRepo creates a new Repo for T objects.
 func NewRepo[T Identifiable](db *pop.Connection) *Repo[T] {
 	return &Repo[T]{

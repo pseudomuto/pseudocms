@@ -20,3 +20,47 @@ message PingRequest {
 message PingResponse {
   string msg = 1;
 }
+
+// AdminService is used to manage content.
+service AdminService {
+	// CreateDefinition creates a new definition object.
+  rpc CreateDefinition(CreateDefinitionRequest) returns (CreateDefinitionResponse) {
+	  option (google.api.http) = {
+		  post: "/v1/admin/definitions"
+			body: "*"
+		};
+	}
+}
+
+enum FieldType {
+  FIELD_TYPE_UNSPECIFIED = 0;
+	FIELD_TYPE_FLOAT = 1;
+	FIELD_TYPE_INT = 2;
+	FIELD_TYPE_STRING = 3;
+	FIELD_TYPE_TEXT = 4;
+}
+
+message Field {
+  string id = 1;
+	string name = 2;
+	string description = 3;
+	FieldType field_type = 4;
+	repeated string constraints = 5;
+}
+
+message Definition {
+  string id = 1;
+	string name = 2;
+	string description = 3;
+	repeated Field fields = 4;
+}
+
+message CreateDefinitionRequest {
+	string name = 1;
+	string description = 2;
+	repeated Field fields = 3;
+}
+
+message CreateDefinitionResponse {
+  Definition definition = 1;
+}

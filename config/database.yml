@@ -8,7 +8,3 @@ development: &default
   pool: 5
   options:
     sslmode: disable
-
-test: &test
-  <<: *default
-  database: pseudocms_test
