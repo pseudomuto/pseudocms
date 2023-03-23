@@ -1,6 +1,7 @@
 package ctl
 
 import (
+	"encoding/json"
 	"io"
 	"sync"
 
@@ -16,13 +17,14 @@ var (
 	clientSync sync.Once
 )
 
+// Options defines options for managing I/O streams.
 type Options struct {
 	In  io.Reader
 	Err io.Writer
 	Out io.Writer
 }
 
-// Run executes
+// Run executes the pseudoctl cli command.
 func Run(args []string, opts Options) error {
 	cmd := &cobra.Command{
 		Use:     "pseudoctl",
@@ -44,9 +46,20 @@ func Run(args []string, opts Options) error {
 	// Ensure flags override env vars
 	viper.BindPFlag("server", cmd.PersistentFlags().Lookup("server"))
 
-	cmd.AddCommand(definitionsCmd(), healthCmd())
+	cmd.AddCommand(definitionsCmd(), fieldsCmd(), healthCmd())
 	cmd.SetArgs(args)
 	return cmd.Execute()
+}
+
+// printJSON prints the marshaled obj using the stdout stream for the command.
+func printJSON(cmd *cobra.Command, obj interface{}) error {
+	res, err := json.MarshalIndent(obj, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	_, err = cmd.OutOrStdout().Write(append(res, byte('\n')))
+	return err
 }
 
 func getClient() grpc.ClientConnInterface {

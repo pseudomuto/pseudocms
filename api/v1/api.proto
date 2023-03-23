@@ -30,6 +30,13 @@ service AdminService {
 			body: "*"
 		};
 	}
+
+  rpc CreateField(CreateFieldRequest) returns (CreateFieldResponse) {
+    option (google.api.http) = {
+      post: "/v1/admin/fields",
+      body: "*"
+    };
+  }
 }
 
 enum FieldType {
@@ -63,4 +70,16 @@ message CreateDefinitionRequest {
 
 message CreateDefinitionResponse {
   Definition definition = 1;
+}
+
+message CreateFieldRequest {
+  string definition_id = 1;
+	string name = 2;
+	string description = 3;
+	FieldType field_type = 4;
+	repeated string constraints = 5;
+}
+
+message CreateFieldResponse {
+  Field field = 1;
 }

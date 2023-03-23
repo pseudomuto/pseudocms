@@ -25,7 +25,7 @@ type CreateOptions struct {
 	Eager bool
 }
 
-// Save creates the model in the database.
+// Create creates the model in the database.
 func (r *Repo[T]) Create(model *T, opts CreateOptions) error {
 	return r.db.Transaction(func(tx *pop.Connection) error {
 		if opts.Eager {
@@ -33,6 +33,17 @@ func (r *Repo[T]) Create(model *T, opts CreateOptions) error {
 		}
 
 		return tx.Create(model)
+	})
+}
+
+// Update updates the model in the database.
+func (r *Repo[T]) Update(model *T, opts CreateOptions) error {
+	return r.db.Transaction(func(tx *pop.Connection) error {
+		if opts.Eager {
+			tx = tx.Eager()
+		}
+
+		return tx.Update(model)
 	})
 }
 

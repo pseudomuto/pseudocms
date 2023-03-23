@@ -110,6 +110,7 @@ var HealthService_ServiceDesc = grpc.ServiceDesc{
 
 const (
 	AdminService_CreateDefinition_FullMethodName = "/api.v1.AdminService/CreateDefinition"
+	AdminService_CreateField_FullMethodName      = "/api.v1.AdminService/CreateField"
 )
 
 // AdminServiceClient is the client API for AdminService service.
@@ -118,6 +119,7 @@ const (
 type AdminServiceClient interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(ctx context.Context, in *CreateDefinitionRequest, opts ...grpc.CallOption) (*CreateDefinitionResponse, error)
+	CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error)
 }
 
 type adminServiceClient struct {
@@ -137,12 +139,22 @@ func (c *adminServiceClient) CreateDefinition(ctx context.Context, in *CreateDef
 	return out, nil
 }
 
+func (c *adminServiceClient) CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error) {
+	out := new(CreateFieldResponse)
+	err := c.cc.Invoke(ctx, AdminService_CreateField_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServiceServer is the server API for AdminService service.
 // All implementations should embed UnimplementedAdminServiceServer
 // for forward compatibility
 type AdminServiceServer interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error)
+	CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error)
 }
 
 // UnimplementedAdminServiceServer should be embedded to have forward compatible implementations.
@@ -151,6 +163,9 @@ type UnimplementedAdminServiceServer struct {
 
 func (UnimplementedAdminServiceServer) CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDefinition not implemented")
+}
+func (UnimplementedAdminServiceServer) CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateField not implemented")
 }
 
 // UnsafeAdminServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -182,6 +197,24 @@ func _AdminService_CreateDefinition_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminService_CreateField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFieldRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServiceServer).CreateField(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminService_CreateField_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServiceServer).CreateField(ctx, req.(*CreateFieldRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdminService_ServiceDesc is the grpc.ServiceDesc for AdminService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -192,6 +225,10 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDefinition",
 			Handler:    _AdminService_CreateDefinition_Handler,
+		},
+		{
+			MethodName: "CreateField",
+			Handler:    _AdminService_CreateField_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

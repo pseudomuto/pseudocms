@@ -38,8 +38,9 @@ func (db *TestDB) Open() (*pop.Connection, error) {
 	url.Path = db.name
 
 	conn, err := pop.NewConnection(&pop.ConnectionDetails{
-		URL:    url.String(),
-		Driver: "postgres",
+		Dialect: "cockroachdb",
+		URL:     url.String(),
+		Driver:  "postgres",
 	})
 	if err != nil {
 		return nil, err

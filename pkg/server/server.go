@@ -16,8 +16,11 @@ func ListenAndServe(addr string, opts ...Option) (chan<- os.Signal, <-chan bool)
 	svrOpts := makeOptions(opts)
 
 	svr := grpc.NewServer()
-	v1.RegisterAdminServiceServer(svr, AdminService(models.NewRepo[models.Definition](svrOpts.db)))
 	v1.RegisterHealthServiceServer(svr, HealthService())
+	v1.RegisterAdminServiceServer(svr, AdminService(
+		models.NewRepo[models.Definition](svrOpts.db),
+		models.NewRepo[models.Field](svrOpts.db),
+	))
 
 	go func(svr *grpc.Server, opts *options) {
 		signal.Notify(opts.sigTrap, svrOpts.sigs...)

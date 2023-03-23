@@ -1,8 +1,6 @@
 package ctl
 
 import (
-	"fmt"
-
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/spf13/cobra"
 )
@@ -20,7 +18,12 @@ func definitionsCmd() *cobra.Command {
 
 func createDefCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create",
+		Use: "create",
+		Example: `# Create a new content defintion.
+pseudoctl defs create \
+  -n definition_name \
+  -d "some description" \
+`,
 		Short: "Create a new content definition",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client := v1.NewAdminServiceClient(getClient())
@@ -32,18 +35,14 @@ func createDefCmd() *cobra.Command {
 				return err
 			}
 
-			_, err = fmt.Fprintf(
-				cmd.OutOrStdout(),
-				"Created definition %s (%s)\n",
-				resp.Definition.Name,
-				resp.Definition.Id,
-			)
-			return err
+			return printJSON(cmd, resp.Definition)
 		},
 	}
 
 	cmd.Flags().StringP("name", "n", "", "the name of the definition")
 	cmd.Flags().StringP("description", "d", "", "the description of the definition")
+	cmd.MarkFlagRequired("name")
+	cmd.MarkFlagRequired("description")
 
 	return cmd
 }

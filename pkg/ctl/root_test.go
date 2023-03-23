@@ -13,6 +13,10 @@ import (
 // uuidRegexp matches (roughly) a UUID
 var uuidRegexp = regexp.MustCompile(`[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}`)
 
+func (s *CtlSuite) TestHelp() {
+	s.runCmd("-h")
+}
+
 func (s *CtlSuite) TestVersion() {
 	s.runCmd("-v")
 }
