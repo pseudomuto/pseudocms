@@ -22,7 +22,7 @@ func pingCmd() *cobra.Command {
 		Use:   "ping",
 		Short: "Ping the server to make sure it's up",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := v1.NewHealthServiceClient(getClient())
+			client := getHealthClient(cmd.Context())
 			resp, err := client.Ping(cmd.Context(), new(v1.PingRequest))
 			if err != nil {
 				return err

@@ -41,7 +41,7 @@ pseudoctl fields create <def_id> \
 			// Trim the space around each of the values.
 			constraints = ext.MapSlice(constraints, strings.TrimSpace)
 
-			client := v1.NewAdminServiceClient(getClient())
+			client := getAdminClient(cmd.Context())
 			resp, err := client.CreateField(cmd.Context(), &v1.CreateFieldRequest{
 				DefinitionId: args[0],
 				Name:         cmd.Flags().Lookup("name").Value.String(),

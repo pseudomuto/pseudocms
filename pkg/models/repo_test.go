@@ -10,11 +10,10 @@ import (
 )
 
 func (s *suite) TestRepoFind() {
-	tx := s.Conn()
 	def := factory.Definition.MustCreate().(Definition)
-	s.Require().NoError(tx.Create(&def))
+	s.Require().NoError(s.conn.Create(&def))
 
-	repo := NewRepo[Definition](tx)
+	repo := NewRepo[Definition](s.conn)
 
 	// when found
 	d, err := repo.Find(def.ID, FindOptions{})
@@ -28,13 +27,11 @@ func (s *suite) TestRepoFind() {
 }
 
 func (s *suite) TestRepoSave() {
-	tx := s.Conn()
-
 	s.T().Run("only root object", func(t *testing.T) {
 		def := factory.Definition.MustCreate().(Definition)
 		require.NotEmpty(t, def.Fields)
 
-		repo := NewRepo[Definition](tx)
+		repo := NewRepo[Definition](s.conn)
 		repo.Create(&def, CreateOptions{})
 
 		d, err := repo.Find(def.ID, FindOptions{Eager: true})
@@ -47,7 +44,7 @@ func (s *suite) TestRepoSave() {
 		def := factory.Definition.MustCreate().(Definition)
 		require.NotEmpty(t, def.Fields)
 
-		repo := NewRepo[Definition](tx)
+		repo := NewRepo[Definition](s.conn)
 		require.NoError(t, repo.Create(&def, CreateOptions{Eager: true}))
 
 		d, err := repo.Find(def.ID, FindOptions{Eager: true})

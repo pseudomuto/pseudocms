@@ -7,17 +7,16 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
-	"github.com/gobuffalo/pop/v6"
 	"go.uber.org/zap"
 )
 
 type options struct {
-	db        *pop.Connection
-	done      chan bool
-	log       logr.Logger
-	sigs      []os.Signal
-	sigTrap   chan os.Signal
-	sdTimeout time.Duration
+	done        chan bool
+	log         logr.Logger
+	repoFactory RepoFactory
+	sigs        []os.Signal
+	sigTrap     chan os.Signal
+	sdTimeout   time.Duration
 }
 
 // Option describes a setup option for the HTTP server.
@@ -29,14 +28,14 @@ type optFunc func(*options)
 
 func (f optFunc) apply(o *options) { f(o) }
 
-// WithDatabase sets the database connection for handling persistence.
-func WithDatabase(db *pop.Connection) Option {
-	return optFunc(func(o *options) { o.db = db })
-}
-
 // WithLogger species the logger to use for logging. By default, this is a development zap logger.
 func WithLogger(log logr.Logger) Option {
 	return optFunc(func(o *options) { o.log = log })
+}
+
+// WithRepoFactory sets the RepoFactory used to communicate with the database.
+func WithRepoFactory(rf RepoFactory) Option {
+	return optFunc(func(o *options) { o.repoFactory = rf })
 }
 
 // WithSignals specifies the signal that will trigger a shutdown. By default these are syscall.SIGINT and syscall.SIGTERM.

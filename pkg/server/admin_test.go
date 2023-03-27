@@ -3,6 +3,8 @@ package server_test
 import (
 	"context"
 
+	"github.com/gobuffalo/pop/v6/slices"
+	"github.com/gofrs/uuid"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/pseudomuto/pseudocms/pkg/models"
 	. "github.com/pseudomuto/pseudocms/pkg/server"
@@ -10,8 +12,20 @@ import (
 
 func (s *suite) TestAdminCreateDefinition() {
 	ctx := context.Background()
-	repo := models.NewRepo[models.Definition](s.Conn())
-	svc := AdminService(repo, nil)
+	svc := AdminService(s.repos)
+
+	s.repos.defs.EXPECT().Create(&models.Definition{
+		Name:        "Test Definition",
+		Description: "Some Test Definition",
+		Fields: []models.Field{
+			{
+				Name:        "Some Field",
+				Description: "Some Field Description",
+				Kind:        models.String,
+				Constraints: slices.String{"required"},
+			},
+		},
+	}, models.CreateOptions{Eager: true}).Return(nil)
 
 	resp, err := svc.CreateDefinition(ctx, &v1.CreateDefinitionRequest{
 		Name:        "Test Definition",
@@ -33,20 +47,19 @@ func (s *suite) TestAdminCreateDefinition() {
 
 func (s *suite) TestAdminCreateField() {
 	ctx := context.Background()
-	svc := AdminService(
-		models.NewRepo[models.Definition](s.Conn()),
-		models.NewRepo[models.Field](s.Conn()),
-	)
+	svc := AdminService(s.repos)
 
-	defResp, err := svc.CreateDefinition(ctx, &v1.CreateDefinitionRequest{
-		Name:        "Test Definition",
-		Description: "Some Test Definition",
-	})
-	s.Require().NoError(err)
-	s.Require().Empty(defResp.Definition.Fields)
+	id := uuid.Must(uuid.NewV4())
+	s.repos.fields.EXPECT().Create(&models.Field{
+		DefinitionID: id,
+		Name:         "Some Field",
+		Description:  "Some Field Description",
+		Kind:         models.String,
+		Constraints:  slices.String{"required", "minLength(3)"},
+	}, models.CreateOptions{}).Return(nil)
 
 	resp, err := svc.CreateField(ctx, &v1.CreateFieldRequest{
-		DefinitionId: defResp.Definition.Id,
+		DefinitionId: id.String(),
 		Name:         "Some Field",
 		Description:  "Some Field Description",
 		FieldType:    v1.FieldType_FIELD_TYPE_STRING,

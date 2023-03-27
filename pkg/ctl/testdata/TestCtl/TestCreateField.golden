@@ -3,7 +3,7 @@ STDOUT:
   "id": "00000000-0000-0000-0000-000000000000",
   "name": "description",
   "description": "a description of the test field",
-  "field_type": 4,
+  "field_type": 3,
   "constraints": [
     "required",
     "minLength(3)"

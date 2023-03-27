@@ -33,6 +33,7 @@ db/migration: ## Generate a database migration named $(NAME)
 
 generate: bin/buf bin/protoc-gen-go bin/protoc-gen-go-grpc ## Generate protos files and such
 	@PATH=./bin buf generate
+	@go generate ./...
 
 lint: bin/buf ## Lints the code base
 	@bin/buf lint

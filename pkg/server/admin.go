@@ -9,13 +9,12 @@ import (
 )
 
 // AdminService creates a new v1.AdminServiceServer.
-func AdminService(dr DefinitionsRepo, fr FieldsRepo) v1.AdminServiceServer {
-	return &adminService{defs: dr, fields: fr}
+func AdminService(rf RepoFactory) v1.AdminServiceServer {
+	return &adminService{repoFactory: rf}
 }
 
 type adminService struct {
-	defs   DefinitionsRepo
-	fields FieldsRepo
+	repoFactory RepoFactory
 }
 
 func (s *adminService) CreateDefinition(
@@ -28,7 +27,7 @@ func (s *adminService) CreateDefinition(
 		Fields:      r.Fields,
 	})
 
-	if err := s.defs.Create(def, models.CreateOptions{Eager: true}); err != nil {
+	if err := s.repoFactory.Definitions().Create(def, models.CreateOptions{Eager: true}); err != nil {
 		return nil, err
 	}
 
@@ -54,7 +53,7 @@ func (s *adminService) CreateField(
 	})
 	field.DefinitionID = id
 
-	if err := s.fields.Create(field, models.CreateOptions{}); err != nil {
+	if err := s.repoFactory.Fields().Create(field, models.CreateOptions{}); err != nil {
 		return nil, err
 	}
 

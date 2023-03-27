@@ -7,7 +7,6 @@ import (
 	"os/signal"
 
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
-	"github.com/pseudomuto/pseudocms/pkg/models"
 	"google.golang.org/grpc"
 )
 
@@ -17,10 +16,7 @@ func ListenAndServe(addr string, opts ...Option) (chan<- os.Signal, <-chan bool)
 
 	svr := grpc.NewServer()
 	v1.RegisterHealthServiceServer(svr, HealthService())
-	v1.RegisterAdminServiceServer(svr, AdminService(
-		models.NewRepo[models.Definition](svrOpts.db),
-		models.NewRepo[models.Field](svrOpts.db),
-	))
+	v1.RegisterAdminServiceServer(svr, AdminService(svrOpts.repoFactory))
 
 	go func(svr *grpc.Server, opts *options) {
 		signal.Notify(opts.sigTrap, svrOpts.sigs...)

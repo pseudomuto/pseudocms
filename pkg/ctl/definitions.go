@@ -26,7 +26,7 @@ pseudoctl defs create \
 `,
 		Short: "Create a new content definition",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			client := v1.NewAdminServiceClient(getClient())
+			client := getAdminClient(cmd.Context())
 			resp, err := client.CreateDefinition(cmd.Context(), &v1.CreateDefinitionRequest{
 				Name:        cmd.Flags().Lookup("name").Value.String(),
 				Description: cmd.Flags().Lookup("description").Value.String(),

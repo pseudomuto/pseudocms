@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-logr/zapr"
 	"github.com/gobuffalo/pop/v6"
+	"github.com/pseudomuto/pseudocms/pkg/models"
 	"github.com/pseudomuto/pseudocms/pkg/server"
 	"go.uber.org/zap"
 )
@@ -33,8 +34,21 @@ func main() {
 
 	_, done := server.ListenAndServe(
 		*addr,
-		server.WithDatabase(db),
 		server.WithLogger(zapr.NewLogger(zlog).WithName("api-server")),
+		server.WithRepoFactory(&repoFactory{db: db}),
 	)
 	<-done
+}
+
+// repoFactory satisfies server.RepoFactory by returning repos that use the db connection.
+type repoFactory struct {
+	db *pop.Connection
+}
+
+func (r *repoFactory) Definitions() server.DefinitionsRepo {
+	return models.NewRepo[models.Definition](r.db)
+}
+
+func (r *repoFactory) Fields() server.FieldsRepo {
+	return models.NewRepo[models.Field](r.db)
 }

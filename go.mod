@@ -11,6 +11,7 @@ require (
 	github.com/gobuffalo/pop/v6 v6.1.1
 	github.com/gobuffalo/validate/v3 v3.3.3
 	github.com/gofrs/uuid v4.3.1+incompatible
+	github.com/golang/mock v1.4.4
 	github.com/mattn/goreman v0.3.13
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0

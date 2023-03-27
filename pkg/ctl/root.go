@@ -3,18 +3,11 @@ package ctl
 import (
 	"encoding/json"
 	"io"
-	"sync"
 
 	"github.com/pseudomuto/pseudocms"
+	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-)
-
-var (
-	client     grpc.ClientConnInterface
-	clientSync sync.Once
 )
 
 // Options defines options for managing I/O streams.
@@ -22,6 +15,9 @@ type Options struct {
 	In  io.Reader
 	Err io.Writer
 	Out io.Writer
+
+	AdminClient  v1.AdminServiceClient
+	HealthClient v1.HealthServiceClient
 }
 
 // Run executes the pseudoctl cli command.
@@ -31,6 +27,12 @@ func Run(args []string, opts Options) error {
 		Short:   "A tool for working with pseudocms",
 		Version: pseudocms.Version(),
 	}
+
+	// set clients on the context
+	cmd.SetContext(setHealthClient(
+		setAdminClient(cmd.Context(), opts.AdminClient),
+		opts.HealthClient,
+	))
 
 	if opts.Out != nil {
 		cmd.SetOut(opts.Out)
@@ -60,18 +62,4 @@ func printJSON(cmd *cobra.Command, obj interface{}) error {
 
 	_, err = cmd.OutOrStdout().Write(append(res, byte('\n')))
 	return err
-}
-
-func getClient() grpc.ClientConnInterface {
-	clientSync.Do(func() {
-		host := viper.GetString("server")
-		conn, err := grpc.Dial(host, grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err != nil {
-			panic(err)
-		}
-
-		client = conn
-	})
-
-	return client
 }
