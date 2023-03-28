@@ -12,6 +12,7 @@ require (
 	github.com/gobuffalo/validate/v3 v3.3.3
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/golang/mock v1.4.4
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/mattn/goreman v0.3.13
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
@@ -46,6 +47,7 @@ require (
 	github.com/gobuffalo/plush/v4 v4.1.18 // indirect
 	github.com/gobuffalo/tags/v3 v3.1.4 // indirect
 	github.com/gofrs/flock v0.8.1 // indirect
+	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/gorilla/css v1.0.0 // indirect

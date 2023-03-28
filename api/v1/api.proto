@@ -8,14 +8,11 @@ option go_package = "github.com/pseudomuto/pseudocms/pkg/api/v1";
 service HealthService {
   // Ping is used to test that the service is up and responding to requests.
   rpc Ping(PingRequest) returns (PingResponse) {
-    option (google.api.http) = {
-      get: "/v1/ping"
-    };
+    option (google.api.http) = {get: "/v1/health/ping"};
   }
 }
 
-message PingRequest {
-}
+message PingRequest {}
 
 message PingResponse {
   string msg = 1;
@@ -32,9 +29,7 @@ service AdminService {
   }
 
   rpc GetDefinition(GetDefinitionRequest) returns (GetDefinitionResponse) {
-    option (google.api.http) = {
-      get: "/v1/admin/definitions/{id}",
-    };
+    option (google.api.http) = {get: "/v1/admin/definitions/{id}"};
   }
 
   rpc CreateField(CreateFieldRequest) returns (CreateFieldResponse) {

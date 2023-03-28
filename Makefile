@@ -31,7 +31,7 @@ db/migration: ## Generate a database migration named $(NAME)
 
 ##@: Code Gen and Formatting
 
-generate: bin/buf bin/protoc-gen-go bin/protoc-gen-go-grpc ## Generate protos files and such
+generate: bin/buf bin/protoc-gen-go bin/protoc-gen-go-grpc bin/protoc-gen-grpc-gateway bin/protoc-gen-openapiv2## Generate protos files and such
 	@PATH=./bin buf generate
 	@go generate ./...
 
@@ -62,3 +62,9 @@ bin/protoc-gen-go: ## Install protoc-gen-go
 
 bin/protoc-gen-go-grpc: ## Install protoc-gen-go-grpc
 	@GOBIN=$(abspath ./bin) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+bin/protoc-gen-grpc-gateway: ## Install protoc-gen-grpc-gateway
+	@GOBIN=$(abspath ./bin) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway
+
+bin/protoc-gen-openapiv2: ## Install protoc-gen-openapiv2
+	@GOBIN=$(abspath ./bin) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
