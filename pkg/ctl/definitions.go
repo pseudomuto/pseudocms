@@ -12,7 +12,7 @@ func definitionsCmd() *cobra.Command {
 		Aliases: []string{"d", "defs"},
 	}
 
-	cmd.AddCommand(createDefCmd())
+	cmd.AddCommand(createDefCmd(), getDefCmd())
 	return cmd
 }
 
@@ -45,4 +45,23 @@ pseudoctl defs create \
 	cmd.MarkFlagRequired("description")
 
 	return cmd
+}
+
+func getDefCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "get <DEFINITION_ID>",
+		Short: "Look up a definition by id",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getAdminClient(cmd.Context())
+			resp, err := client.GetDefinition(cmd.Context(), &v1.GetDefinitionRequest{
+				Id: args[0],
+			})
+
+			if err != nil {
+				return err
+			}
+
+			return printJSON(cmd, resp.Definition)
+		},
+	}
 }

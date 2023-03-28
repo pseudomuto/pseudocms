@@ -75,6 +75,26 @@ func (mr *MockAdminServiceClientMockRecorder) CreateField(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateField", reflect.TypeOf((*MockAdminServiceClient)(nil).CreateField), varargs...)
 }
 
+// GetDefinition mocks base method
+func (m *MockAdminServiceClient) GetDefinition(arg0 context.Context, arg1 *v1.GetDefinitionRequest, arg2 ...grpc.CallOption) (*v1.GetDefinitionResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDefinition", varargs...)
+	ret0, _ := ret[0].(*v1.GetDefinitionResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefinition indicates an expected call of GetDefinition
+func (mr *MockAdminServiceClientMockRecorder) GetDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefinition", reflect.TypeOf((*MockAdminServiceClient)(nil).GetDefinition), varargs...)
+}
+
 // MockHealthServiceClient is a mock of HealthServiceClient interface
 type MockHealthServiceClient struct {
 	ctrl     *gomock.Controller

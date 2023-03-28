@@ -7,11 +7,11 @@ option go_package = "github.com/pseudomuto/pseudocms/pkg/api/v1";
 
 service HealthService {
   // Ping is used to test that the service is up and responding to requests.
-	rpc Ping(PingRequest) returns (PingResponse) {
-	  option (google.api.http) = {
-		  get: "/v1/ping"
-		};
-	}
+  rpc Ping(PingRequest) returns (PingResponse) {
+    option (google.api.http) = {
+      get: "/v1/ping"
+    };
+  }
 }
 
 message PingRequest {
@@ -23,13 +23,19 @@ message PingResponse {
 
 // AdminService is used to manage content.
 service AdminService {
-	// CreateDefinition creates a new definition object.
+  // CreateDefinition creates a new definition object.
   rpc CreateDefinition(CreateDefinitionRequest) returns (CreateDefinitionResponse) {
-	  option (google.api.http) = {
-		  post: "/v1/admin/definitions"
-			body: "*"
-		};
-	}
+    option (google.api.http) = {
+      post: "/v1/admin/definitions"
+      body: "*"
+    };
+  }
+
+  rpc GetDefinition(GetDefinitionRequest) returns (GetDefinitionResponse) {
+    option (google.api.http) = {
+      get: "/v1/admin/definitions/{id}",
+    };
+  }
 
   rpc CreateField(CreateFieldRequest) returns (CreateFieldResponse) {
     option (google.api.http) = {
@@ -41,43 +47,51 @@ service AdminService {
 
 enum FieldType {
   FIELD_TYPE_UNSPECIFIED = 0;
-	FIELD_TYPE_FLOAT = 1;
-	FIELD_TYPE_INT = 2;
-	FIELD_TYPE_STRING = 3;
-	FIELD_TYPE_TEXT = 4;
+  FIELD_TYPE_FLOAT = 1;
+  FIELD_TYPE_INT = 2;
+  FIELD_TYPE_STRING = 3;
+  FIELD_TYPE_TEXT = 4;
 }
 
 message Field {
   string id = 1;
-	string name = 2;
-	string description = 3;
-	FieldType field_type = 4;
-	repeated string constraints = 5;
+  string name = 2;
+  string description = 3;
+  FieldType field_type = 4;
+  repeated string constraints = 5;
 }
 
 message Definition {
   string id = 1;
-	string name = 2;
-	string description = 3;
-	repeated Field fields = 4;
+  string name = 2;
+  string description = 3;
+  repeated Field fields = 4;
 }
 
 message CreateDefinitionRequest {
-	string name = 1;
-	string description = 2;
-	repeated Field fields = 3;
+  string name = 1;
+  string description = 2;
+  repeated Field fields = 3;
 }
 
 message CreateDefinitionResponse {
   Definition definition = 1;
 }
 
+message GetDefinitionRequest {
+  string id = 1;
+}
+
+message GetDefinitionResponse {
+  Definition definition = 1;
+}
+
 message CreateFieldRequest {
   string definition_id = 1;
-	string name = 2;
-	string description = 3;
-	FieldType field_type = 4;
-	repeated string constraints = 5;
+  string name = 2;
+  string description = 3;
+  FieldType field_type = 4;
+  repeated string constraints = 5;
 }
 
 message CreateFieldResponse {

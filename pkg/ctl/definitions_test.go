@@ -32,3 +32,32 @@ func (s *CtlSuite) TestCreateDefinition() {
 		"-d", req.Description,
 	)
 }
+
+func (s *CtlSuite) TestGetDefinition() {
+	defID := uuid.Must(uuid.FromString("f0b86eb0-4db0-4a31-8180-30ba65a7bcc8"))
+
+	s.admin.EXPECT().
+		GetDefinition(gomock.Any(), &v1.GetDefinitionRequest{Id: defID.String()}).
+		Return(&v1.GetDefinitionResponse{
+			Definition: &v1.Definition{
+				Id:          defID.String(),
+				Name:        "test",
+				Description: "Some test definition",
+				Fields: []*v1.Field{
+					{
+						Id:          uuid.Must(uuid.NewV4()).String(),
+						Name:        "test",
+						Description: "Some test field",
+						FieldType:   v1.FieldType_FIELD_TYPE_STRING,
+						Constraints: []string{"required", "minLength(3)"},
+					},
+				},
+			},
+		}, nil)
+
+	s.runCmd(
+		"definitions",
+		"get",
+		defID.String(),
+	)
+}

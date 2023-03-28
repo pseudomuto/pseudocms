@@ -110,6 +110,7 @@ var HealthService_ServiceDesc = grpc.ServiceDesc{
 
 const (
 	AdminService_CreateDefinition_FullMethodName = "/api.v1.AdminService/CreateDefinition"
+	AdminService_GetDefinition_FullMethodName    = "/api.v1.AdminService/GetDefinition"
 	AdminService_CreateField_FullMethodName      = "/api.v1.AdminService/CreateField"
 )
 
@@ -119,6 +120,7 @@ const (
 type AdminServiceClient interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(ctx context.Context, in *CreateDefinitionRequest, opts ...grpc.CallOption) (*CreateDefinitionResponse, error)
+	GetDefinition(ctx context.Context, in *GetDefinitionRequest, opts ...grpc.CallOption) (*GetDefinitionResponse, error)
 	CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error)
 }
 
@@ -133,6 +135,15 @@ func NewAdminServiceClient(cc grpc.ClientConnInterface) AdminServiceClient {
 func (c *adminServiceClient) CreateDefinition(ctx context.Context, in *CreateDefinitionRequest, opts ...grpc.CallOption) (*CreateDefinitionResponse, error) {
 	out := new(CreateDefinitionResponse)
 	err := c.cc.Invoke(ctx, AdminService_CreateDefinition_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminServiceClient) GetDefinition(ctx context.Context, in *GetDefinitionRequest, opts ...grpc.CallOption) (*GetDefinitionResponse, error) {
+	out := new(GetDefinitionResponse)
+	err := c.cc.Invoke(ctx, AdminService_GetDefinition_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -154,6 +165,7 @@ func (c *adminServiceClient) CreateField(ctx context.Context, in *CreateFieldReq
 type AdminServiceServer interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error)
+	GetDefinition(context.Context, *GetDefinitionRequest) (*GetDefinitionResponse, error)
 	CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error)
 }
 
@@ -163,6 +175,9 @@ type UnimplementedAdminServiceServer struct {
 
 func (UnimplementedAdminServiceServer) CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDefinition not implemented")
+}
+func (UnimplementedAdminServiceServer) GetDefinition(context.Context, *GetDefinitionRequest) (*GetDefinitionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDefinition not implemented")
 }
 func (UnimplementedAdminServiceServer) CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateField not implemented")
@@ -197,6 +212,24 @@ func _AdminService_CreateDefinition_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminService_GetDefinition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDefinitionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServiceServer).GetDefinition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminService_GetDefinition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServiceServer).GetDefinition(ctx, req.(*GetDefinitionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AdminService_CreateField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateFieldRequest)
 	if err := dec(in); err != nil {
@@ -225,6 +258,10 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDefinition",
 			Handler:    _AdminService_CreateDefinition_Handler,
+		},
+		{
+			MethodName: "GetDefinition",
+			Handler:    _AdminService_GetDefinition_Handler,
 		},
 		{
 			MethodName: "CreateField",

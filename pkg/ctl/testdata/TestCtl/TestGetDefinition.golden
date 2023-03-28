@@ -1,0 +1,21 @@
+STDOUT:
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "test",
+  "description": "Some test definition",
+  "fields": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "test",
+      "description": "Some test field",
+      "field_type": 3,
+      "constraints": [
+        "required",
+        "minLength(3)"
+      ]
+    }
+  ]
+}
+
+
+STDERR:

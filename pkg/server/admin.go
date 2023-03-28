@@ -36,6 +36,23 @@ func (s *adminService) CreateDefinition(
 	}, nil
 }
 
+func (s *adminService) GetDefinition(
+	ctx context.Context,
+	r *v1.GetDefinitionRequest,
+) (*v1.GetDefinitionResponse, error) {
+	id, err := uuid.FromString(r.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	def, err := s.repoFactory.Definitions().Find(id, models.FindOptions{Eager: true})
+	if err != nil {
+		return nil, err
+	}
+
+	return &v1.GetDefinitionResponse{Definition: def.ToProto()}, nil
+}
+
 func (s *adminService) CreateField(
 	ctx context.Context,
 	r *v1.CreateFieldRequest,

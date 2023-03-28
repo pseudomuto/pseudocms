@@ -45,6 +45,34 @@ func (s *suite) TestAdminCreateDefinition() {
 	s.Require().NotEmpty(resp.Definition.Fields[0].Id)
 }
 
+func (s *suite) TestAdminGetDefinition() {
+	ctx := context.Background()
+	svc := AdminService(s.repos)
+
+	id := uuid.Must(uuid.NewV4())
+	s.repos.defs.EXPECT().Find(id, models.FindOptions{Eager: true}).Return(
+		&models.Definition{
+			Model:       models.Model{ID: id},
+			Name:        "Some Definition",
+			Description: "Some Test Description",
+			Fields: []models.Field{
+				{
+					Model:       models.Model{ID: uuid.Must(uuid.NewV4())},
+					Name:        "Some Field",
+					Description: "Some Field Description",
+					Kind:        models.Text,
+					Constraints: []string{"required"},
+				},
+			},
+		},
+		nil,
+	)
+
+	resp, err := svc.GetDefinition(ctx, &v1.GetDefinitionRequest{Id: id.String()})
+	s.Require().NoError(err)
+	s.Require().NotNil(resp.Definition)
+}
+
 func (s *suite) TestAdminCreateField() {
 	ctx := context.Background()
 	svc := AdminService(s.repos)
