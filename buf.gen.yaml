@@ -10,4 +10,4 @@ plugins:
     out: pkg
     opt: paths=source_relative
   - plugin: openapiv2
-    out: ./
+    out: openapi
