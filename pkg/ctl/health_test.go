@@ -11,5 +11,5 @@ func (s *CtlSuite) TestHealthPing() {
 		nil,
 	)
 
-	s.runCmd("health", "ping")
+	s.runCmd(nil, "health", "ping")
 }

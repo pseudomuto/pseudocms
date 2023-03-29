@@ -1,0 +1,15 @@
+STDOUT:
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "stringField",
+  "description": "A string field description",
+  "field_type": 4,
+  "constraints": [
+    "required",
+    "minLength(3)",
+    "maxLength(100)"
+  ]
+}
+
+
+STDERR:

@@ -1,9 +1,9 @@
 package ctl_test
 
 func (s *CtlSuite) TestHelp() {
-	s.runCmd("-h")
+	s.runCmd(nil, "-h")
 }
 
 func (s *CtlSuite) TestVersion() {
-	s.runCmd("-v")
+	s.runCmd(nil, "-v")
 }

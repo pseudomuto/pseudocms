@@ -2,6 +2,8 @@ package ctl
 
 import (
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
+	"github.com/pseudomuto/pseudocms/pkg/ext"
+	"github.com/pseudomuto/pseudocms/pkg/models"
 	"github.com/spf13/cobra"
 )
 
@@ -26,10 +28,20 @@ pseudoctl defs create \
 `,
 		Short: "Create a new content definition",
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			def, err := parseStdinOrFile[models.Definition](cmd)
+			if err != nil {
+				return err
+			}
+
+			// Flags override values from JSON file (if supplied).
+			def.Name = stringFlag(cmd, "name", def.Name)
+			def.Description = stringFlag(cmd, "description", def.Description)
+
 			client := getAdminClient(cmd.Context())
 			resp, err := client.CreateDefinition(cmd.Context(), &v1.CreateDefinitionRequest{
-				Name:        cmd.Flags().Lookup("name").Value.String(),
-				Description: cmd.Flags().Lookup("description").Value.String(),
+				Name:        def.Name,
+				Description: def.Description,
+				Fields:      ext.MapSlice(def.Fields, func(f models.Field) *v1.Field { return f.ToProto() }),
 			})
 			if err != nil {
 				return err
@@ -39,10 +51,9 @@ pseudoctl defs create \
 		},
 	}
 
+	cmd.Flags().StringP("file", "f", "", "a YAML file containing the definition")
 	cmd.Flags().StringP("name", "n", "", "the name of the definition")
 	cmd.Flags().StringP("description", "d", "", "the description of the definition")
-	cmd.MarkFlagRequired("name")
-	cmd.MarkFlagRequired("description")
 
 	return cmd
 }

@@ -1,0 +1,22 @@
+STDOUT:
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "New Definition",
+  "description": "Some definition description",
+  "fields": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "stringField",
+      "description": "A string field",
+      "field_type": 3,
+      "constraints": [
+        "required",
+        "minLength(3)",
+        "maxLength(100)"
+      ]
+    }
+  ]
+}
+
+
+STDERR:

@@ -1,0 +1,8 @@
+---
+name: stringField
+description: A string field
+kind: string
+constraints:
+  - required
+  - minLength(3)
+  - maxLength(100)

@@ -4,7 +4,9 @@ package ctl_test
 
 import (
 	"bytes"
+	"embed"
 	"fmt"
+	"io"
 	"regexp"
 	"testing"
 
@@ -15,8 +17,13 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// uuidRegexp matches (roughly) a UUID
-var uuidRegexp = regexp.MustCompile(`[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}`)
+var (
+	//go:embed testdata/*.yaml
+	fs embed.FS
+
+	// uuidRegexp matches (roughly) a UUID
+	uuidRegexp = regexp.MustCompile(`[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}`)
+)
 
 type CtlSuite struct {
 	suite.Suite
@@ -40,13 +47,14 @@ func (s *CtlSuite) TearDownTest() {
 	s.ctrl.Finish()
 }
 
-func (s *CtlSuite) runCmd(cmd ...string) {
+func (s *CtlSuite) runCmd(in io.Reader, cmd ...string) {
 	stdout := new(bytes.Buffer)
 	stderr := new(bytes.Buffer)
 
 	s.Require().NoError(Run(cmd, Options{
 		AdminClient:  s.admin,
 		HealthClient: s.health,
+		In:           in,
 		Out:          stdout,
 		Err:          stderr,
 	}))
