@@ -111,6 +111,7 @@ var HealthService_ServiceDesc = grpc.ServiceDesc{
 const (
 	AdminService_CreateDefinition_FullMethodName = "/api.v1.AdminService/CreateDefinition"
 	AdminService_GetDefinition_FullMethodName    = "/api.v1.AdminService/GetDefinition"
+	AdminService_ListDefinitions_FullMethodName  = "/api.v1.AdminService/ListDefinitions"
 	AdminService_CreateField_FullMethodName      = "/api.v1.AdminService/CreateField"
 )
 
@@ -121,6 +122,7 @@ type AdminServiceClient interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(ctx context.Context, in *CreateDefinitionRequest, opts ...grpc.CallOption) (*CreateDefinitionResponse, error)
 	GetDefinition(ctx context.Context, in *GetDefinitionRequest, opts ...grpc.CallOption) (*GetDefinitionResponse, error)
+	ListDefinitions(ctx context.Context, in *ListDefinitionsRequest, opts ...grpc.CallOption) (AdminService_ListDefinitionsClient, error)
 	CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error)
 }
 
@@ -150,6 +152,38 @@ func (c *adminServiceClient) GetDefinition(ctx context.Context, in *GetDefinitio
 	return out, nil
 }
 
+func (c *adminServiceClient) ListDefinitions(ctx context.Context, in *ListDefinitionsRequest, opts ...grpc.CallOption) (AdminService_ListDefinitionsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AdminService_ServiceDesc.Streams[0], AdminService_ListDefinitions_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &adminServiceListDefinitionsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type AdminService_ListDefinitionsClient interface {
+	Recv() (*Definition, error)
+	grpc.ClientStream
+}
+
+type adminServiceListDefinitionsClient struct {
+	grpc.ClientStream
+}
+
+func (x *adminServiceListDefinitionsClient) Recv() (*Definition, error) {
+	m := new(Definition)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *adminServiceClient) CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error) {
 	out := new(CreateFieldResponse)
 	err := c.cc.Invoke(ctx, AdminService_CreateField_FullMethodName, in, out, opts...)
@@ -166,6 +200,7 @@ type AdminServiceServer interface {
 	// CreateDefinition creates a new definition object.
 	CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error)
 	GetDefinition(context.Context, *GetDefinitionRequest) (*GetDefinitionResponse, error)
+	ListDefinitions(*ListDefinitionsRequest, AdminService_ListDefinitionsServer) error
 	CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error)
 }
 
@@ -178,6 +213,9 @@ func (UnimplementedAdminServiceServer) CreateDefinition(context.Context, *Create
 }
 func (UnimplementedAdminServiceServer) GetDefinition(context.Context, *GetDefinitionRequest) (*GetDefinitionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDefinition not implemented")
+}
+func (UnimplementedAdminServiceServer) ListDefinitions(*ListDefinitionsRequest, AdminService_ListDefinitionsServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListDefinitions not implemented")
 }
 func (UnimplementedAdminServiceServer) CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateField not implemented")
@@ -230,6 +268,27 @@ func _AdminService_GetDefinition_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminService_ListDefinitions_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListDefinitionsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AdminServiceServer).ListDefinitions(m, &adminServiceListDefinitionsServer{stream})
+}
+
+type AdminService_ListDefinitionsServer interface {
+	Send(*Definition) error
+	grpc.ServerStream
+}
+
+type adminServiceListDefinitionsServer struct {
+	grpc.ServerStream
+}
+
+func (x *adminServiceListDefinitionsServer) Send(m *Definition) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _AdminService_CreateField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateFieldRequest)
 	if err := dec(in); err != nil {
@@ -268,6 +327,12 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AdminService_CreateField_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ListDefinitions",
+			Handler:       _AdminService_ListDefinitions_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "api/v1/api.proto",
 }

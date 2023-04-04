@@ -1,6 +1,8 @@
 package ctl
 
 import (
+	"io"
+
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/pseudomuto/pseudocms/pkg/ext"
 	"github.com/pseudomuto/pseudocms/pkg/models"
@@ -14,7 +16,7 @@ func definitionsCmd() *cobra.Command {
 		Aliases: []string{"d", "defs"},
 	}
 
-	cmd.AddCommand(createDefCmd(), getDefCmd())
+	cmd.AddCommand(createDefCmd(), getDefCmd(), listDefsCmd())
 	return cmd
 }
 
@@ -75,4 +77,47 @@ func getDefCmd() *cobra.Command {
 			return printJSON(cmd, resp.Definition)
 		},
 	}
+}
+
+func listDefsCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all definitions",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			eager, err := cmd.Flags().GetBool("associations")
+			if err != nil {
+				return err
+			}
+
+			client := getAdminClient(cmd.Context())
+			stream, err := client.ListDefinitions(cmd.Context(), &v1.ListDefinitionsRequest{
+				Eager:   eager,
+				OrderBy: "id",
+			})
+
+			if err != nil {
+				return err
+			}
+
+			for {
+				def, err := stream.Recv()
+				if err != nil {
+					if err == io.EOF {
+						break
+					}
+
+					return err
+				}
+
+				if err := printJSON(cmd, def); err != nil {
+					return err
+				}
+			}
+
+			return nil
+		},
+	}
+
+	cmd.Flags().BoolP("associations", "a", false, "load associations (fields, etc).")
+	return cmd
 }

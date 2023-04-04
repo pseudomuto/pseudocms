@@ -1,13 +1,20 @@
 package server_test
 
+//go:generate go run github.com/golang/mock/mockgen -destination=mocks_api_test.go -package=server_test github.com/pseudomuto/pseudocms/pkg/api/v1 AdminService_ListDefinitionsServer
+
 import (
 	"context"
+	"sort"
+	"testing"
 
 	"github.com/gobuffalo/pop/v6/slices"
 	"github.com/gofrs/uuid"
+	gomock "github.com/golang/mock/gomock"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/pseudomuto/pseudocms/pkg/models"
 	. "github.com/pseudomuto/pseudocms/pkg/server"
+	"github.com/pseudomuto/pseudocms/pkg/testutil/factory"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func (s *suite) TestAdminCreateDefinition() {
@@ -71,6 +78,55 @@ func (s *suite) TestAdminGetDefinition() {
 	resp, err := svc.GetDefinition(ctx, &v1.GetDefinitionRequest{Id: id.String()})
 	s.Require().NoError(err)
 	s.Require().NotNil(resp.Definition)
+}
+
+func (s *suite) TestAdminListDefinitions() {
+	svc := AdminService(s.repos)
+
+	defs := make([]*models.Definition, 5)
+	stream := NewMockAdminService_ListDefinitionsServer(s.ctrl)
+
+	for i := 0; i < len(defs); i++ {
+		d, ok := factory.Definition.MustCreate().(models.Definition)
+		s.Require().True(ok)
+		defs[i] = &d
+	}
+
+	// Stable sort by ID.
+	sort.Slice(defs, func(i, j int) bool { return defs[i].ID.String() < defs[j].ID.String() })
+
+	for _, d := range defs {
+		// One expectation per definition.
+		stream.EXPECT().Send(d.ToProto()).Return(nil)
+	}
+
+	s.repos.defs.EXPECT().List(gomock.Any()).Return(&models.ListResult[models.Definition]{
+		LastKey:  defs[len(defs)-1].ID,
+		LastPage: true,
+		Results:  defs,
+	}, nil)
+
+	err := svc.ListDefinitions(&v1.ListDefinitionsRequest{}, stream)
+	s.Require().NoError(err)
+
+	s.T().Run("single page", func(t *testing.T) {
+		// Expect indices [1, 3]
+		for i := 1; i < 4; i++ {
+			stream.EXPECT().Send(defs[i].ToProto()).Return(nil)
+		}
+
+		s.repos.defs.EXPECT().List(gomock.Any()).Return(&models.ListResult[models.Definition]{
+			LastKey:  defs[3].ID,
+			LastPage: false,
+			Results:  defs[1:4],
+		}, nil)
+
+		err := svc.ListDefinitions(&v1.ListDefinitionsRequest{
+			AfterKey:   defs[0].ID.String(),
+			MaxResults: wrapperspb.Int32(3),
+		}, stream)
+		s.Require().NoError(err)
+	})
 }
 
 func (s *suite) TestAdminCreateField() {

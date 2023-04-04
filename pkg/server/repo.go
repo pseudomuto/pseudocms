@@ -1,6 +1,6 @@
 package server
 
-//go:generate go run github.com/golang/mock/mockgen -destination=mocks_test.go -package=server_test . DefinitionsRepo,FieldsRepo
+// - go:generate go run github.com/golang/mock/mockgen -destination=mocks_test.go -package=server_test . DefinitionsRepo,FieldsRepo
 
 import (
 	"github.com/gofrs/uuid"
@@ -11,8 +11,9 @@ import (
 // is for testing. This is satisfied by models.Repo[T].
 type Repo[T models.Identifiable] interface {
 	Create(*T, models.CreateOptions) error
-	Update(*T, models.CreateOptions) error
+	Update(*T, models.UpdateOptions) error
 	Find(uuid.UUID, models.FindOptions) (*T, error)
+	List(...models.ListOption) (*models.ListResult[T], error)
 }
 
 // DefinitionsRepo is a typealias for a Definition repo.

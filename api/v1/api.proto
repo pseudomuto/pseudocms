@@ -2,6 +2,7 @@ syntax = "proto3";
 package api.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
 
 option go_package = "github.com/pseudomuto/pseudocms/pkg/api/v1";
 
@@ -30,6 +31,10 @@ service AdminService {
 
   rpc GetDefinition(GetDefinitionRequest) returns (GetDefinitionResponse) {
     option (google.api.http) = {get: "/v1/admin/definitions/{id}"};
+  }
+
+  rpc ListDefinitions(ListDefinitionsRequest) returns (stream Definition) {
+    option (google.api.http) = {get: "/v1/admin/definitions"};
   }
 
   rpc CreateField(CreateFieldRequest) returns (CreateFieldResponse) {
@@ -79,6 +84,20 @@ message GetDefinitionRequest {
 
 message GetDefinitionResponse {
   Definition definition = 1;
+}
+
+enum SortDirection {
+  SORT_DIRECTION_UNSPECIFIED = 0;
+  SORT_DIRECTION_ASCENDING = 1;
+  SORT_DIRECTION_DESCENDING = 2;
+}
+
+message ListDefinitionsRequest {
+  bool eager = 1;
+  string order_by = 2;
+  SortDirection sort_direction = 3;
+  string after_key = 4;
+  google.protobuf.Int32Value maxResults = 5;
 }
 
 message CreateFieldRequest {

@@ -31,7 +31,7 @@ func TestListenAndServe(t *testing.T) {
 func TestListenAndServeHTTP(t *testing.T) {
 	withRPCServer(t, func(host string) {
 		sigs, done := ListenAndServeHTTP(
-			"localhost:8092",
+			"localhost:8192",
 			WithLogger(logr.Discard()),
 			WithRPCHost(host),
 			WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
@@ -42,7 +42,7 @@ func TestListenAndServeHTTP(t *testing.T) {
 			<-done
 		})
 
-		resp, err := http.Get("http://localhost:8092/v1/health/ping")
+		resp, err := http.Get("http://localhost:8192/v1/health/ping")
 		require.NoError(t, err)
 
 		body, err := io.ReadAll(resp.Body)

@@ -20,6 +20,74 @@
   ],
   "paths": {
     "/v1/admin/definitions": {
+      "get": {
+        "operationId": "AdminService_ListDefinitions",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1Definition"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1Definition"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "eager",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SORT_DIRECTION_UNSPECIFIED",
+              "SORT_DIRECTION_ASCENDING",
+              "SORT_DIRECTION_DESCENDING"
+            ],
+            "default": "SORT_DIRECTION_UNSPECIFIED"
+          },
+          {
+            "name": "afterKey",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxResults",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
+      },
       "post": {
         "summary": "CreateDefinition creates a new definition object.",
         "operationId": "AdminService_CreateDefinition",
@@ -294,6 +362,15 @@
           "type": "string"
         }
       }
+    },
+    "v1SortDirection": {
+      "type": "string",
+      "enum": [
+        "SORT_DIRECTION_UNSPECIFIED",
+        "SORT_DIRECTION_ASCENDING",
+        "SORT_DIRECTION_DESCENDING"
+      ],
+      "default": "SORT_DIRECTION_UNSPECIFIED"
     }
   }
 }

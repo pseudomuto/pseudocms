@@ -53,6 +53,62 @@ func (s *adminService) GetDefinition(
 	return &v1.GetDefinitionResponse{Definition: def.ToProto()}, nil
 }
 
+func (s *adminService) ListDefinitions(
+	r *v1.ListDefinitionsRequest,
+	stream v1.AdminService_ListDefinitionsServer,
+) error {
+	opts := []models.ListOption{
+		models.Eager(r.Eager),
+		models.OrderBy(r.OrderBy, r.SortDirection.ToSQL()),
+	}
+
+	if r.AfterKey != "" {
+		opts = append(opts, models.AfterKey(r.AfterKey))
+	}
+
+	// If the caller specified a max results value, just get the one page.
+	if r.MaxResults.GetValue() != 0 {
+		opts = append(opts, models.PageSize(int(r.MaxResults.GetValue())))
+		_, err := s.listDefinitions(stream, opts)
+		return err
+	}
+
+	// Otherwise, auto-paginate all results.
+	var err error
+	for {
+		opts, err = s.listDefinitions(stream, opts)
+		if err != nil {
+			return err
+		}
+
+		if opts == nil {
+			return nil
+		}
+	}
+}
+
+func (s *adminService) listDefinitions(
+	stream v1.AdminService_ListDefinitionsServer,
+	opts []models.ListOption,
+) ([]models.ListOption, error) {
+	defs, err := s.repoFactory.Definitions().List(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, def := range defs.Results {
+		if err := stream.Send(def.ToProto()); err != nil {
+			return nil, err
+		}
+	}
+
+	if defs.LastPage {
+		return nil, nil
+	}
+
+	return append(opts, models.AfterKey(defs.LastKey)), nil
+}
+
 func (s *adminService) CreateField(
 	ctx context.Context,
 	r *v1.CreateFieldRequest,

@@ -12,7 +12,7 @@ var Field = factory.NewFactory(models.Field{}).
 		return Model.MustCreate(), nil
 	}).
 	Attr("Name", func(factory.Args) (interface{}, error) {
-		return randomdata.Noun(), nil
+		return name(), nil
 	}).
 	Attr("Description", func(factory.Args) (interface{}, error) {
 		return randomdata.Paragraph(), nil
