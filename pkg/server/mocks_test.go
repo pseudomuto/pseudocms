@@ -9,6 +9,7 @@ import (
 	uuid "github.com/gofrs/uuid"
 	gomock "github.com/golang/mock/gomock"
 	models "github.com/pseudomuto/pseudocms/pkg/models"
+	"github.com/pseudomuto/pseudocms/pkg/repo"
 )
 
 // MockDefinitionsRepo is a mock of DefinitionsRepo interface
@@ -35,7 +36,7 @@ func (m *MockDefinitionsRepo) EXPECT() *MockDefinitionsRepoMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockDefinitionsRepo) Create(arg0 *models.Definition, arg1 models.CreateOptions) error {
+func (m *MockDefinitionsRepo) Create(arg0 *models.Definition, arg1 repo.CreateOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -49,7 +50,7 @@ func (mr *MockDefinitionsRepoMockRecorder) Create(arg0, arg1 interface{}) *gomoc
 }
 
 // Find mocks base method
-func (m *MockDefinitionsRepo) Find(arg0 uuid.UUID, arg1 models.FindOptions) (*models.Definition, error) {
+func (m *MockDefinitionsRepo) Find(arg0 uuid.UUID, arg1 repo.FindOptions) (*models.Definition, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", arg0, arg1)
 	ret0, _ := ret[0].(*models.Definition)
@@ -64,14 +65,14 @@ func (mr *MockDefinitionsRepoMockRecorder) Find(arg0, arg1 interface{}) *gomock.
 }
 
 // List mocks base method
-func (m *MockDefinitionsRepo) List(arg0 ...models.ListOption) (*models.ListResult[models.Definition], error) {
+func (m *MockDefinitionsRepo) List(arg0 ...repo.ListOption) (*repo.ListResult[models.Definition], error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range arg0 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*models.ListResult[models.Definition])
+	ret0, _ := ret[0].(*repo.ListResult[models.Definition])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -83,7 +84,7 @@ func (mr *MockDefinitionsRepoMockRecorder) List(arg0 ...interface{}) *gomock.Cal
 }
 
 // Update mocks base method
-func (m *MockDefinitionsRepo) Update(arg0 *models.Definition, arg1 models.UpdateOptions) error {
+func (m *MockDefinitionsRepo) Update(arg0 *models.Definition, arg1 repo.UpdateOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -120,7 +121,7 @@ func (m *MockFieldsRepo) EXPECT() *MockFieldsRepoMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockFieldsRepo) Create(arg0 *models.Field, arg1 models.CreateOptions) error {
+func (m *MockFieldsRepo) Create(arg0 *models.Field, arg1 repo.CreateOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -134,7 +135,7 @@ func (mr *MockFieldsRepoMockRecorder) Create(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // Find mocks base method
-func (m *MockFieldsRepo) Find(arg0 uuid.UUID, arg1 models.FindOptions) (*models.Field, error) {
+func (m *MockFieldsRepo) Find(arg0 uuid.UUID, arg1 repo.FindOptions) (*models.Field, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", arg0, arg1)
 	ret0, _ := ret[0].(*models.Field)
@@ -149,14 +150,14 @@ func (mr *MockFieldsRepoMockRecorder) Find(arg0, arg1 interface{}) *gomock.Call 
 }
 
 // List mocks base method
-func (m *MockFieldsRepo) List(arg0 ...models.ListOption) (*models.ListResult[models.Field], error) {
+func (m *MockFieldsRepo) List(arg0 ...repo.ListOption) (*repo.ListResult[models.Field], error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range arg0 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*models.ListResult[models.Field])
+	ret0, _ := ret[0].(*repo.ListResult[models.Field])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -168,7 +169,7 @@ func (mr *MockFieldsRepoMockRecorder) List(arg0 ...interface{}) *gomock.Call {
 }
 
 // Update mocks base method
-func (m *MockFieldsRepo) Update(arg0 *models.Field, arg1 models.UpdateOptions) error {
+func (m *MockFieldsRepo) Update(arg0 *models.Field, arg1 repo.UpdateOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", arg0, arg1)
 	ret0, _ := ret[0].(error)

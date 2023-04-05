@@ -12,6 +12,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/pseudomuto/pseudocms/pkg/models"
+	"github.com/pseudomuto/pseudocms/pkg/repo"
 	. "github.com/pseudomuto/pseudocms/pkg/server"
 	"github.com/pseudomuto/pseudocms/pkg/testutil/factory"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -32,7 +33,7 @@ func (s *suite) TestAdminCreateDefinition() {
 				Constraints: slices.String{"required"},
 			},
 		},
-	}, models.CreateOptions{Eager: true}).Return(nil)
+	}, repo.CreateOptions{Eager: true}).Return(nil)
 
 	resp, err := svc.CreateDefinition(ctx, &v1.CreateDefinitionRequest{
 		Name:        "Test Definition",
@@ -57,7 +58,7 @@ func (s *suite) TestAdminGetDefinition() {
 	svc := AdminService(s.repos)
 
 	id := uuid.Must(uuid.NewV4())
-	s.repos.defs.EXPECT().Find(id, models.FindOptions{Eager: true}).Return(
+	s.repos.defs.EXPECT().Find(id, repo.FindOptions{Eager: true}).Return(
 		&models.Definition{
 			Model:       models.Model{ID: id},
 			Name:        "Some Definition",
@@ -100,7 +101,7 @@ func (s *suite) TestAdminListDefinitions() {
 		stream.EXPECT().Send(d.ToProto()).Return(nil)
 	}
 
-	s.repos.defs.EXPECT().List(gomock.Any()).Return(&models.ListResult[models.Definition]{
+	s.repos.defs.EXPECT().List(gomock.Any()).Return(&repo.ListResult[models.Definition]{
 		LastKey:  defs[len(defs)-1].ID,
 		LastPage: true,
 		Results:  defs,
@@ -115,10 +116,10 @@ func (s *suite) TestAdminListDefinitions() {
 			stream.EXPECT().Send(defs[i].ToProto()).Return(nil)
 		}
 
-		s.repos.defs.EXPECT().List(gomock.Any()).Return(&models.ListResult[models.Definition]{
+		s.repos.defs.EXPECT().List(gomock.Any()).Return(&repo.ListResult[models.Definition]{
 			LastKey:  defs[3].ID,
 			LastPage: false,
-			Results:  defs[1:4],
+			Results:  defs[1:4], // range [i, N)
 		}, nil)
 
 		err := svc.ListDefinitions(&v1.ListDefinitionsRequest{
@@ -140,7 +141,7 @@ func (s *suite) TestAdminCreateField() {
 		Description:  "Some Field Description",
 		Kind:         models.String,
 		Constraints:  slices.String{"required", "minLength(3)"},
-	}, models.CreateOptions{}).Return(nil)
+	}, repo.CreateOptions{}).Return(nil)
 
 	resp, err := svc.CreateField(ctx, &v1.CreateFieldRequest{
 		DefinitionId: id.String(),

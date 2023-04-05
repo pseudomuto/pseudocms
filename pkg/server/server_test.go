@@ -57,7 +57,7 @@ func withRPCServer(t *testing.T, fn func(string)) {
 	t.Helper()
 
 	sigs, done := ListenAndServe(
-		"localhost:8091",
+		"localhost:8191",
 		WithLogger(logr.Discard()),
 	)
 
@@ -66,5 +66,5 @@ func withRPCServer(t *testing.T, fn func(string)) {
 		<-done
 	})
 
-	fn("localhost:8091")
+	fn("localhost:8191")
 }

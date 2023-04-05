@@ -6,12 +6,6 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-// Identifiable describes an interface for types with an ID.
-type Identifiable interface {
-	// GetID returns the id for this thing.
-	GetID() uuid.UUID
-}
-
 // Model is a base model that can be embedded in others to include common fields
 // like ID, timestamps, etc.
 type Model struct {

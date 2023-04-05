@@ -6,6 +6,7 @@ import (
 	"github.com/gofrs/uuid"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"github.com/pseudomuto/pseudocms/pkg/models"
+	"github.com/pseudomuto/pseudocms/pkg/repo"
 )
 
 // AdminService creates a new v1.AdminServiceServer.
@@ -27,7 +28,7 @@ func (s *adminService) CreateDefinition(
 		Fields:      r.Fields,
 	})
 
-	if err := s.repoFactory.Definitions().Create(def, models.CreateOptions{Eager: true}); err != nil {
+	if err := s.repoFactory.Definitions().Create(def, repo.CreateOptions{Eager: true}); err != nil {
 		return nil, err
 	}
 
@@ -45,7 +46,7 @@ func (s *adminService) GetDefinition(
 		return nil, err
 	}
 
-	def, err := s.repoFactory.Definitions().Find(id, models.FindOptions{Eager: true})
+	def, err := s.repoFactory.Definitions().Find(id, repo.FindOptions{Eager: true})
 	if err != nil {
 		return nil, err
 	}
@@ -57,18 +58,18 @@ func (s *adminService) ListDefinitions(
 	r *v1.ListDefinitionsRequest,
 	stream v1.AdminService_ListDefinitionsServer,
 ) error {
-	opts := []models.ListOption{
-		models.Eager(r.Eager),
-		models.OrderBy(r.OrderBy, r.SortDirection.ToSQL()),
+	opts := []repo.ListOption{
+		repo.Eager(r.Eager),
+		repo.OrderBy(r.OrderBy, r.SortDirection.ToSQL()),
 	}
 
 	if r.AfterKey != "" {
-		opts = append(opts, models.AfterKey(r.AfterKey))
+		opts = append(opts, repo.AfterKey(r.AfterKey))
 	}
 
 	// If the caller specified a max results value, just get the one page.
 	if r.MaxResults.GetValue() != 0 {
-		opts = append(opts, models.PageSize(int(r.MaxResults.GetValue())))
+		opts = append(opts, repo.PageSize(int(r.MaxResults.GetValue())))
 		_, err := s.listDefinitions(stream, opts)
 		return err
 	}
@@ -89,8 +90,8 @@ func (s *adminService) ListDefinitions(
 
 func (s *adminService) listDefinitions(
 	stream v1.AdminService_ListDefinitionsServer,
-	opts []models.ListOption,
-) ([]models.ListOption, error) {
+	opts []repo.ListOption,
+) ([]repo.ListOption, error) {
 	defs, err := s.repoFactory.Definitions().List(opts...)
 	if err != nil {
 		return nil, err
@@ -106,7 +107,7 @@ func (s *adminService) listDefinitions(
 		return nil, nil
 	}
 
-	return append(opts, models.AfterKey(defs.LastKey)), nil
+	return append(opts, repo.AfterKey(defs.LastKey)), nil
 }
 
 func (s *adminService) CreateField(
@@ -126,7 +127,7 @@ func (s *adminService) CreateField(
 	})
 	field.DefinitionID = id
 
-	if err := s.repoFactory.Fields().Create(field, models.CreateOptions{}); err != nil {
+	if err := s.repoFactory.Fields().Create(field, repo.CreateOptions{}); err != nil {
 		return nil, err
 	}
 

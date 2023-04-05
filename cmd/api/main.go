@@ -8,6 +8,7 @@ import (
 	"github.com/go-logr/zapr"
 	"github.com/gobuffalo/pop/v6"
 	"github.com/pseudomuto/pseudocms/pkg/models"
+	"github.com/pseudomuto/pseudocms/pkg/repo"
 	"github.com/pseudomuto/pseudocms/pkg/server"
 	"go.uber.org/zap"
 )
@@ -46,9 +47,9 @@ type repoFactory struct {
 }
 
 func (r *repoFactory) Definitions() server.DefinitionsRepo {
-	return models.NewRepo[models.Definition](r.db)
+	return repo.New[models.Definition](r.db)
 }
 
 func (r *repoFactory) Fields() server.FieldsRepo {
-	return models.NewRepo[models.Field](r.db)
+	return repo.New[models.Field](r.db)
 }
