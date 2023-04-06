@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/go-logr/zapr"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	"google.golang.org/grpc"
@@ -16,14 +17,16 @@ import (
 func ListenAndServe(addr string, opts ...Option) (chan<- os.Signal, <-chan bool) {
 	svrOpts := makeOptions(opts)
 
-	svr := grpc.NewServer()
+	svr := grpc.NewServer(GRPCLoggingInterceptors(svrOpts.log)...)
 	v1.RegisterHealthServiceServer(svr, HealthService())
 	v1.RegisterAdminServiceServer(svr, AdminService(svrOpts.repoFactory))
+
+	log := zapr.NewLogger(svrOpts.log)
 
 	go func(svr *grpc.Server, opts *options) {
 		signal.Notify(opts.sigTrap, svrOpts.sigs...)
 		sig := <-opts.sigTrap
-		opts.log.Info("Received shutdown signal", "signal", sig)
+		log.Info("Received shutdown signal", "signal", sig)
 
 		_, cancel := context.WithTimeout(context.Background(), opts.sdTimeout)
 		defer cancel()
@@ -35,12 +38,12 @@ func ListenAndServe(addr string, opts ...Option) (chan<- os.Signal, <-chan bool)
 	go func(svr *grpc.Server, opts *options) {
 		conn, err := net.Listen("tcp", addr)
 		if err != nil {
-			opts.log.Error(err, "Failed to create TCP listener")
+			log.Error(err, "Failed to create TCP listener")
 			close(svrOpts.done)
 		}
 
 		if err := svr.Serve(conn); err != nil {
-			opts.log.Error(err, "Failed to start/stop server cleanly")
+			log.Error(err, "Failed to start/stop server cleanly")
 		}
 	}(svr, svrOpts)
 
@@ -50,6 +53,7 @@ func ListenAndServe(addr string, opts ...Option) (chan<- os.Signal, <-chan bool)
 // ListenAndServeHTTP starts the HTTP server that serves the gateway proxy.
 func ListenAndServeHTTP(addr string, opts ...Option) (chan<- os.Signal, <-chan bool) {
 	svrOpts := makeOptions(opts)
+	log := zapr.NewLogger(svrOpts.log)
 
 	handlers := []func(context.Context, *runtime.ServeMux, string, []grpc.DialOption) error{
 		v1.RegisterAdminServiceHandlerFromEndpoint,
@@ -60,7 +64,7 @@ func ListenAndServeHTTP(addr string, opts ...Option) (chan<- os.Signal, <-chan b
 	mux := runtime.NewServeMux()
 	for _, h := range handlers {
 		if err := h(ctx, mux, svrOpts.rpcHost, svrOpts.rpcDialOptions); err != nil {
-			svrOpts.log.Error(err, "Failed to register service handler")
+			log.Error(err, "Failed to register service handler")
 			close(svrOpts.done)
 			return svrOpts.sigTrap, svrOpts.done
 		}
@@ -68,13 +72,13 @@ func ListenAndServeHTTP(addr string, opts ...Option) (chan<- os.Signal, <-chan b
 
 	svr := &http.Server{
 		Addr:    addr,
-		Handler: mux,
+		Handler: WithHTTPLogger(log, mux),
 	}
 
 	go func(svr *http.Server, opts *options) {
 		signal.Notify(opts.sigTrap, svrOpts.sigs...)
 		sig := <-opts.sigTrap
-		opts.log.Info("Received shutdown signal", "signal", sig)
+		log.Info("Received shutdown signal", "signal", sig)
 
 		_, cancel := context.WithTimeout(context.Background(), opts.sdTimeout)
 		defer cancel()
@@ -82,7 +86,7 @@ func ListenAndServeHTTP(addr string, opts ...Option) (chan<- os.Signal, <-chan b
 		// turn off keep alives for new connections
 		svr.SetKeepAlivesEnabled(false)
 		if err := svr.Shutdown(ctx); err != nil {
-			opts.log.Error(err, "Failed to shutdown gateway cleanly")
+			log.Error(err, "Failed to shutdown gateway cleanly")
 		}
 
 		close(opts.done)
@@ -90,7 +94,7 @@ func ListenAndServeHTTP(addr string, opts ...Option) (chan<- os.Signal, <-chan b
 
 	go func(svr *http.Server, opts *options) {
 		if err := svr.ListenAndServe(); err != nil {
-			opts.log.Error(err, "Failed to start gateway server cleanly")
+			log.Error(err, "Failed to start gateway server cleanly")
 		}
 	}(svr, svrOpts)
 

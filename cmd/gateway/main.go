@@ -5,7 +5,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/go-logr/zapr"
 	"github.com/pseudomuto/pseudocms/pkg/server"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -31,7 +30,7 @@ func main() {
 
 	_, done := server.ListenAndServeHTTP(
 		*addr,
-		server.WithLogger(zapr.NewLogger(zlog).WithName("gateway")),
+		server.WithLogger(zlog),
 		server.WithRPCHost(*rpcHost),
 		server.WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 	)

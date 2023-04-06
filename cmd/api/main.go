@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/go-logr/zapr"
 	"github.com/gobuffalo/pop/v6"
 	"github.com/pseudomuto/pseudocms/pkg/models"
 	"github.com/pseudomuto/pseudocms/pkg/repo"
@@ -35,7 +34,7 @@ func main() {
 
 	_, done := server.ListenAndServe(
 		*addr,
-		server.WithLogger(zapr.NewLogger(zlog).WithName("api-server")),
+		server.WithLogger(zlog),
 		server.WithRepoFactory(&repoFactory{db: db}),
 	)
 	<-done

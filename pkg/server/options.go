@@ -5,15 +5,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-logr/logr"
-	"github.com/go-logr/zapr"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
 
 type options struct {
 	done           chan bool
-	log            logr.Logger
+	log            *zap.Logger
 	repoFactory    RepoFactory
 	rpcDialOptions []grpc.DialOption
 	rpcHost        string
@@ -37,7 +35,7 @@ func WithDialOptions(opts ...grpc.DialOption) Option {
 }
 
 // WithLogger species the logger to use for logging. By default, this is a development zap logger.
-func WithLogger(log logr.Logger) Option {
+func WithLogger(log *zap.Logger) Option {
 	return optFunc(func(o *options) { o.log = log })
 }
 
@@ -77,11 +75,11 @@ func makeOptions(svrOptions []Option) *options {
 	return opts
 }
 
-func defaultLogger() logr.Logger {
+func defaultLogger() *zap.Logger {
 	log, err := zap.NewDevelopment()
 	if err != nil {
 		panic("unable to initialize logger:" + err.Error())
 	}
 
-	return zapr.NewLogger(log)
+	return log
 }

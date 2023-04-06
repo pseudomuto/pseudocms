@@ -12,6 +12,7 @@ require (
 	github.com/gobuffalo/validate/v3 v3.3.3
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/golang/mock v1.4.4
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/mattn/goreman v0.3.13
 	github.com/spf13/cobra v1.6.1
@@ -23,12 +24,14 @@ require (
 	google.golang.org/grpc v1.53.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
 	google.golang.org/protobuf v1.29.0
+	gopkg.in/yaml.v2 v2.4.0
 	gotest.tools/v3 v3.4.0
 )
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/benbjohnson/clock v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
@@ -96,6 +99,5 @@ require (
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

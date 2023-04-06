@@ -7,10 +7,10 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/go-logr/logr"
 	v1 "github.com/pseudomuto/pseudocms/pkg/api/v1"
 	. "github.com/pseudomuto/pseudocms/pkg/server"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap/zaptest"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -32,7 +32,7 @@ func TestListenAndServeHTTP(t *testing.T) {
 	withRPCServer(t, func(host string) {
 		sigs, done := ListenAndServeHTTP(
 			"localhost:8192",
-			WithLogger(logr.Discard()),
+			WithLogger(zaptest.NewLogger(t)),
 			WithRPCHost(host),
 			WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 		)
@@ -58,7 +58,7 @@ func withRPCServer(t *testing.T, fn func(string)) {
 
 	sigs, done := ListenAndServe(
 		"localhost:8191",
-		WithLogger(logr.Discard()),
+		WithLogger(zaptest.NewLogger(t)),
 	)
 
 	t.Cleanup(func() {

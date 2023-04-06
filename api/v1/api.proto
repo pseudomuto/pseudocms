@@ -97,7 +97,7 @@ message ListDefinitionsRequest {
   string order_by = 2;
   SortDirection sort_direction = 3;
   string after_key = 4;
-  google.protobuf.Int32Value maxResults = 5;
+  google.protobuf.Int32Value max_results = 5;
 }
 
 message CreateFieldRequest {
