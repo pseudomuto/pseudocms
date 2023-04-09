@@ -148,6 +148,50 @@
         "tags": [
           "AdminService"
         ]
+      },
+      "post": {
+        "operationId": "AdminService_UpdateDefinition",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateDefinitionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
       }
     },
     "/v1/admin/fields": {
@@ -371,6 +415,14 @@
         "SORT_DIRECTION_DESCENDING"
       ],
       "default": "SORT_DIRECTION_UNSPECIFIED"
+    },
+    "v1UpdateDefinitionResponse": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "$ref": "#/definitions/v1Definition"
+        }
+      }
     }
   }
 }

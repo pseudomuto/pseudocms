@@ -37,6 +37,13 @@ service AdminService {
     option (google.api.http) = {get: "/v1/admin/definitions"};
   }
 
+  rpc UpdateDefinition(UpdateDefinitionRequest) returns (UpdateDefinitionResponse) {
+    option (google.api.http) = {
+      post: "/v1/admin/definitions/{id}",
+      body: "*"
+    };
+  }
+
   rpc CreateField(CreateFieldRequest) returns (CreateFieldResponse) {
     option (google.api.http) = {
       post: "/v1/admin/fields",
@@ -98,6 +105,16 @@ message ListDefinitionsRequest {
   SortDirection sort_direction = 3;
   string after_key = 4;
   google.protobuf.Int32Value max_results = 5;
+}
+
+message UpdateDefinitionRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message UpdateDefinitionResponse {
+  Definition definition = 1;
 }
 
 message CreateFieldRequest {

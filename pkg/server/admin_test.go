@@ -130,6 +130,36 @@ func (s *suite) TestAdminListDefinitions() {
 	})
 }
 
+func (s *suite) TestAdminUpdateDefinition() {
+	ctx := context.Background()
+	svc := AdminService(s.repos)
+	id := uuid.Must(uuid.NewV4())
+
+	def := &v1.Definition{
+		Id:          id.String(),
+		Name:        "the def",
+		Description: "the description",
+		Fields:      []*v1.Field{},
+	}
+
+	// stub the find call
+	s.repos.defs.EXPECT().
+		Find(id, repo.FindOptions{}).
+		Return(models.DefinitionFromProto(def), nil)
+
+	s.repos.defs.EXPECT().
+		Update(models.DefinitionFromProto(def), repo.UpdateOptions{}).
+		Return(nil)
+
+	resp, err := svc.UpdateDefinition(ctx, &v1.UpdateDefinitionRequest{
+		Id:          def.Id,
+		Name:        def.Name,
+		Description: def.Description,
+	})
+	s.Require().NoError(err)
+	s.Require().Equal(def, resp.Definition)
+}
+
 func (s *suite) TestAdminCreateField() {
 	ctx := context.Background()
 	svc := AdminService(s.repos)

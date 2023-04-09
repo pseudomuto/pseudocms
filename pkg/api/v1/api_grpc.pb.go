@@ -112,6 +112,7 @@ const (
 	AdminService_CreateDefinition_FullMethodName = "/api.v1.AdminService/CreateDefinition"
 	AdminService_GetDefinition_FullMethodName    = "/api.v1.AdminService/GetDefinition"
 	AdminService_ListDefinitions_FullMethodName  = "/api.v1.AdminService/ListDefinitions"
+	AdminService_UpdateDefinition_FullMethodName = "/api.v1.AdminService/UpdateDefinition"
 	AdminService_CreateField_FullMethodName      = "/api.v1.AdminService/CreateField"
 )
 
@@ -123,6 +124,7 @@ type AdminServiceClient interface {
 	CreateDefinition(ctx context.Context, in *CreateDefinitionRequest, opts ...grpc.CallOption) (*CreateDefinitionResponse, error)
 	GetDefinition(ctx context.Context, in *GetDefinitionRequest, opts ...grpc.CallOption) (*GetDefinitionResponse, error)
 	ListDefinitions(ctx context.Context, in *ListDefinitionsRequest, opts ...grpc.CallOption) (AdminService_ListDefinitionsClient, error)
+	UpdateDefinition(ctx context.Context, in *UpdateDefinitionRequest, opts ...grpc.CallOption) (*UpdateDefinitionResponse, error)
 	CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error)
 }
 
@@ -184,6 +186,15 @@ func (x *adminServiceListDefinitionsClient) Recv() (*Definition, error) {
 	return m, nil
 }
 
+func (c *adminServiceClient) UpdateDefinition(ctx context.Context, in *UpdateDefinitionRequest, opts ...grpc.CallOption) (*UpdateDefinitionResponse, error) {
+	out := new(UpdateDefinitionResponse)
+	err := c.cc.Invoke(ctx, AdminService_UpdateDefinition_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *adminServiceClient) CreateField(ctx context.Context, in *CreateFieldRequest, opts ...grpc.CallOption) (*CreateFieldResponse, error) {
 	out := new(CreateFieldResponse)
 	err := c.cc.Invoke(ctx, AdminService_CreateField_FullMethodName, in, out, opts...)
@@ -201,6 +212,7 @@ type AdminServiceServer interface {
 	CreateDefinition(context.Context, *CreateDefinitionRequest) (*CreateDefinitionResponse, error)
 	GetDefinition(context.Context, *GetDefinitionRequest) (*GetDefinitionResponse, error)
 	ListDefinitions(*ListDefinitionsRequest, AdminService_ListDefinitionsServer) error
+	UpdateDefinition(context.Context, *UpdateDefinitionRequest) (*UpdateDefinitionResponse, error)
 	CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error)
 }
 
@@ -216,6 +228,9 @@ func (UnimplementedAdminServiceServer) GetDefinition(context.Context, *GetDefini
 }
 func (UnimplementedAdminServiceServer) ListDefinitions(*ListDefinitionsRequest, AdminService_ListDefinitionsServer) error {
 	return status.Errorf(codes.Unimplemented, "method ListDefinitions not implemented")
+}
+func (UnimplementedAdminServiceServer) UpdateDefinition(context.Context, *UpdateDefinitionRequest) (*UpdateDefinitionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDefinition not implemented")
 }
 func (UnimplementedAdminServiceServer) CreateField(context.Context, *CreateFieldRequest) (*CreateFieldResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateField not implemented")
@@ -289,6 +304,24 @@ func (x *adminServiceListDefinitionsServer) Send(m *Definition) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _AdminService_UpdateDefinition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDefinitionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServiceServer).UpdateDefinition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminService_UpdateDefinition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServiceServer).UpdateDefinition(ctx, req.(*UpdateDefinitionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AdminService_CreateField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateFieldRequest)
 	if err := dec(in); err != nil {
@@ -321,6 +354,10 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDefinition",
 			Handler:    _AdminService_GetDefinition_Handler,
+		},
+		{
+			MethodName: "UpdateDefinition",
+			Handler:    _AdminService_UpdateDefinition_Handler,
 		},
 		{
 			MethodName: "CreateField",

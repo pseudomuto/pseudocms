@@ -115,6 +115,26 @@ func (mr *MockAdminServiceClientMockRecorder) ListDefinitions(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDefinitions", reflect.TypeOf((*MockAdminServiceClient)(nil).ListDefinitions), varargs...)
 }
 
+// UpdateDefinition mocks base method
+func (m *MockAdminServiceClient) UpdateDefinition(arg0 context.Context, arg1 *v1.UpdateDefinitionRequest, arg2 ...grpc.CallOption) (*v1.UpdateDefinitionResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateDefinition", varargs...)
+	ret0, _ := ret[0].(*v1.UpdateDefinitionResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDefinition indicates an expected call of UpdateDefinition
+func (mr *MockAdminServiceClientMockRecorder) UpdateDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDefinition", reflect.TypeOf((*MockAdminServiceClient)(nil).UpdateDefinition), varargs...)
+}
+
 // MockHealthServiceClient is a mock of HealthServiceClient interface
 type MockHealthServiceClient struct {
 	ctrl     *gomock.Controller

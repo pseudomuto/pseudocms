@@ -109,3 +109,70 @@ func (s *CtlSuite) TestGetDefinition() {
 		defID.String(),
 	)
 }
+
+func (s *CtlSuite) TestUpdateDefinition() {
+	defID := uuid.Must(uuid.FromString("f0b86eb0-4db0-4a31-8180-30ba65a7bcc8"))
+
+	req := &v1.UpdateDefinitionRequest{
+		Id:          defID.String(),
+		Name:        "test defintion",
+		Description: "description of test definition",
+	}
+
+	s.admin.EXPECT().UpdateDefinition(gomock.Any(), req).Return(
+		&v1.UpdateDefinitionResponse{
+			Definition: &v1.Definition{
+				Id:          defID.String(),
+				Name:        req.Name,
+				Description: req.Description,
+			},
+		},
+		nil,
+	)
+
+	s.runCmd(
+		nil,
+		"definitions",
+		"update",
+		defID.String(),
+		"-n", req.Name,
+		"-d", req.Description,
+	)
+}
+
+func (s *CtlSuite) TestUpdateDefinitionFromFile() {
+	id := uuid.Must(uuid.FromString("f0b86eb0-4db0-4a31-8180-30ba65a7bcc8"))
+
+	req := &v1.UpdateDefinitionRequest{
+		Id:          id.String(),
+		Name:        "Updated Definition",
+		Description: "Some definition description",
+	}
+
+	s.admin.EXPECT().
+		UpdateDefinition(gomock.Any(), req).
+		Return(
+			&v1.UpdateDefinitionResponse{
+				Definition: &v1.Definition{
+					Id:          id.String(),
+					Name:        req.Name,
+					Description: req.Description,
+					Fields:      []*v1.Field{},
+				},
+			},
+			nil,
+		)
+
+	f, err := fs.Open("testdata/definition.yaml")
+	s.Require().NoError(err)
+	s.T().Cleanup(func() { f.Close() })
+
+	s.runCmd(
+		f,
+		"definitions",
+		"update",
+		id.String(),
+		"-f", "-",
+		"-n", "Updated Definition",
+	)
+}

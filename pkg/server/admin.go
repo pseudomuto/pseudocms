@@ -110,6 +110,38 @@ func (s *adminService) listDefinitions(
 	return append(opts, repo.AfterKey(defs.LastKey)), nil
 }
 
+func (s *adminService) UpdateDefinition(
+	ctx context.Context,
+	r *v1.UpdateDefinitionRequest,
+) (*v1.UpdateDefinitionResponse, error) {
+	id, err := uuid.FromString(r.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	db := s.repoFactory.Definitions()
+	def, err := db.Find(id, repo.FindOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	if r.Name != "" {
+		def.Name = r.Name
+	}
+
+	if r.Description != "" {
+		def.Description = r.Description
+	}
+
+	if err := db.Update(def, repo.UpdateOptions{}); err != nil {
+		return nil, err
+	}
+
+	return &v1.UpdateDefinitionResponse{
+		Definition: def.ToProto(),
+	}, nil
+}
+
 func (s *adminService) CreateField(
 	ctx context.Context,
 	r *v1.CreateFieldRequest,
