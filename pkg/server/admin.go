@@ -98,7 +98,9 @@ func (s *adminService) listDefinitions(
 	}
 
 	for _, def := range defs.Results {
-		if err := stream.Send(def.ToProto()); err != nil {
+		if err := stream.Send(&v1.ListDefinitionsResponse{
+			Definition: def.ToProto(),
+		}); err != nil {
 			return nil, err
 		}
 	}

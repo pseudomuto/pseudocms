@@ -170,7 +170,7 @@ func (c *adminServiceClient) ListDefinitions(ctx context.Context, in *ListDefini
 }
 
 type AdminService_ListDefinitionsClient interface {
-	Recv() (*Definition, error)
+	Recv() (*ListDefinitionsResponse, error)
 	grpc.ClientStream
 }
 
@@ -178,8 +178,8 @@ type adminServiceListDefinitionsClient struct {
 	grpc.ClientStream
 }
 
-func (x *adminServiceListDefinitionsClient) Recv() (*Definition, error) {
-	m := new(Definition)
+func (x *adminServiceListDefinitionsClient) Recv() (*ListDefinitionsResponse, error) {
+	m := new(ListDefinitionsResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -292,7 +292,7 @@ func _AdminService_ListDefinitions_Handler(srv interface{}, stream grpc.ServerSt
 }
 
 type AdminService_ListDefinitionsServer interface {
-	Send(*Definition) error
+	Send(*ListDefinitionsResponse) error
 	grpc.ServerStream
 }
 
@@ -300,7 +300,7 @@ type adminServiceListDefinitionsServer struct {
 	grpc.ServerStream
 }
 
-func (x *adminServiceListDefinitionsServer) Send(m *Definition) error {
+func (x *adminServiceListDefinitionsServer) Send(m *ListDefinitionsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 

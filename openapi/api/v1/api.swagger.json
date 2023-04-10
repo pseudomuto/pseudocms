@@ -29,13 +29,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/v1Definition"
+                  "$ref": "#/definitions/v1ListDefinitionsResponse"
                 },
                 "error": {
                   "$ref": "#/definitions/rpcStatus"
                 }
               },
-              "title": "Stream result of v1Definition"
+              "title": "Stream result of v1ListDefinitionsResponse"
             }
           },
           "default": {
@@ -392,6 +392,14 @@
       "default": "FIELD_TYPE_UNSPECIFIED"
     },
     "v1GetDefinitionResponse": {
+      "type": "object",
+      "properties": {
+        "definition": {
+          "$ref": "#/definitions/v1Definition"
+        }
+      }
+    },
+    "v1ListDefinitionsResponse": {
       "type": "object",
       "properties": {
         "definition": {

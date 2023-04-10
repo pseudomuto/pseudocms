@@ -64,7 +64,7 @@ func (mr *MockAdminService_ListDefinitionsServerMockRecorder) RecvMsg(arg0 inter
 }
 
 // Send mocks base method
-func (m *MockAdminService_ListDefinitionsServer) Send(arg0 *v1.Definition) error {
+func (m *MockAdminService_ListDefinitionsServer) Send(arg0 *v1.ListDefinitionsResponse) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)

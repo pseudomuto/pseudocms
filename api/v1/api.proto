@@ -33,7 +33,7 @@ service AdminService {
     option (google.api.http) = {get: "/v1/admin/definitions/{id}"};
   }
 
-  rpc ListDefinitions(ListDefinitionsRequest) returns (stream Definition) {
+  rpc ListDefinitions(ListDefinitionsRequest) returns (stream ListDefinitionsResponse) {
     option (google.api.http) = {get: "/v1/admin/definitions"};
   }
 
@@ -105,6 +105,10 @@ message ListDefinitionsRequest {
   SortDirection sort_direction = 3;
   string after_key = 4;
   google.protobuf.Int32Value max_results = 5;
+}
+
+message ListDefinitionsResponse {
+  Definition definition = 1;
 }
 
 message UpdateDefinitionRequest {

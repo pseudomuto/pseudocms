@@ -98,7 +98,7 @@ func (s *suite) TestAdminListDefinitions() {
 
 	for _, d := range defs {
 		// One expectation per definition.
-		stream.EXPECT().Send(d.ToProto()).Return(nil)
+		stream.EXPECT().Send(&v1.ListDefinitionsResponse{Definition: d.ToProto()}).Return(nil)
 	}
 
 	s.repos.defs.EXPECT().List(gomock.Any()).Return(&repo.ListResult[models.Definition]{
@@ -113,7 +113,7 @@ func (s *suite) TestAdminListDefinitions() {
 	s.T().Run("single page", func(t *testing.T) {
 		// Expect indices [1, 3]
 		for i := 1; i < 4; i++ {
-			stream.EXPECT().Send(defs[i].ToProto()).Return(nil)
+			stream.EXPECT().Send(&v1.ListDefinitionsResponse{Definition: defs[i].ToProto()}).Return(nil)
 		}
 
 		s.repos.defs.EXPECT().List(gomock.Any()).Return(&repo.ListResult[models.Definition]{
