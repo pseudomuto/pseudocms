@@ -1,4 +1,4 @@
-# pseduocmd
+# pseudocms
 
 [![CI Status][ci-svg]][ci-url]
 [![GoDoc][godoc-svg]][godoc-url]
